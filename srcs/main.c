@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/05 11:04:15 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/06 09:42:29 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,13 @@ char	*error_line(char *line, char *unexpected_token)
 char	*add_readline(char *line)
 {
 	char	*read;
-	pid_t	pid;
-	int		status;
 
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("minishell: fork");
-		exit(1);
-	}
-	else if (pid == 0)
-	{
-		read = readline("> ");
-		line = join_3_str(line, " ", read);
-		exit(0);
-	}
-	waitpid(pid, &status, 0);
+	read = readline("> ");
+	line = join_3_str(line, " ", read);
 	return (line);
 }
 
-char	*test_line(char *line)
+int	test_lastchar(char *line)
 {
 	int		i;
 	char	last_char;
@@ -56,19 +43,34 @@ char	*test_line(char *line)
 	while (line[i])
 	{
 		if (last_char == '|' && line[i] == last_char)
-			return (error_line(line, "|"));
+			return (3);
 		if (line[i] > 32 && line[i] < 127)
 			last_char = line[i];
 		i++;
 	}
 	if (last_char == '|')
+		return (1);
+	if (last_char == '<' || last_char == '>')
+		return (2);
+	return (0);
+}
+
+char	*test_line(char *line)
+{
+	int	test;
+
+	test = test_lastchar(line);
+	while (test == 1)
 	{
 		line = add_readline(line);
-		line = test_line(line);
+		test = test_lastchar(line);
 	}
-	if (last_char == '<' || last_char == '>')
+	if (test == 3)
+		return (error_line(line, "|"));
+	else if (test == 2)
 		return (error_line(line, "newline"));
-	return (line);
+	else
+		return (line);
 }
 
 char	**create_env(char **env)

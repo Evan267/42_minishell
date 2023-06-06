@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/04/26 14:10:27 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/06 08:34:58 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ char	**ft_split_cmds(char const *s, char c)
 		return (ret);
 	}
 	len_ptr = ft_count_string((char *)s, c);
-	ret = malloc (sizeof(char *) * (len_ptr + 1));
+	ret = ft_calloc(sizeof(char *), len_ptr + 1);
 	if (!ret)
 		return (0);
 	return (ft_add_part(s, c, ret));

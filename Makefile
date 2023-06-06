@@ -42,10 +42,10 @@ CC			= gcc
 CFLAGS		= -g -Wall -Wextra -Werror
 
 .c.o:		
-			${CC} ${CFLAGS} -I ${HEAD} -Ilibft -c $< -o ${<:.c=.o}
+			${CC} ${CFLAGS} -I ${HEAD} -Ilibft -c $< -o ${<:.c=.o} -fsanitize=address
 
 ${NAME}:	${LFT} ${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lreadline -ltermcap -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lreadline -ltermcap -o ${NAME} -fsanitize=address -static-libsan
 
 ${LFT}:
 			make -s -C libft
