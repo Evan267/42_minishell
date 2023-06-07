@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 12:23:09 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/02 15:16:58 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/07 14:46:44 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	ft_cd(int argc, char **argv, char ***env)
 {
 	char	*path;
 	char	*home;
-	char	*new_var[2];
+	char	**new_var;
 	int	i;
 
 	i = 0;
 	path = NULL;
-
+	new_var = malloc(sizeof(char*) * 2);
 	if (argc == 1)
 	{
 		home = getvaluevar("HOME", *env);
@@ -45,6 +45,7 @@ int	ft_cd(int argc, char **argv, char ***env)
 	new_var[0] = ft_strjoin("PWD=", path);
 	new_var[1] = NULL;
 	free(path);
-	*env = new_env(new_var, *env);
+	*env = new_env(&new_var, *env);
+	ft_clear2d(new_var);
 	return (0);
 }

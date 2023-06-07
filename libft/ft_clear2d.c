@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:15:33 by agallet           #+#    #+#             */
-/*   Updated: 2023/04/25 12:44:45 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:04:45 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ char	*ft_clear2d(char **str)
 	i = 0;
 	if (str && *str)
 	{
-		while (*str && (*str)[i])
+		while (str && *str && (*str)[i])
 			(*str)[i++] = '\0';
 		free(*str);
 		*str = NULL;
 	}
+	free(str);
 	return (NULL);
 }

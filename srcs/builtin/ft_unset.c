@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:12:52 by agallet           #+#    #+#             */
-/*   Updated: 2023/05/29 13:46:23 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/07 13:51:56 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ static	int	search_var(char *str, char **env)
 	length = ft_strlen(str);
 	while (env[i] && ft_strncmp(env[i], str, length))
 		i++;
-	return (i);
+	if (env[i])
+		return (i);
+	return (-1);
 }
 
 int	ft_unset(int argc, char **argv, char ***env)
 {
-	int		i;
-	char	*str;
+	int	i;
+	int	nb;
 
 	i = 1;
 	if (argc == 1)
 		return (1);
 	while (argv[i])
 	{
-		str = getenv(argv[i]);
-		if (str)
-			del_var(&str, search_var(str, *env));
+		nb = search_var(argv[i], *env);
+		if (nb != -1)
+			*env = del_var(*env, nb);
 		i++;
 	}
 	return (0);
