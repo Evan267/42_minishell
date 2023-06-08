@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:27:26 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/06 15:35:32 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/08 08:36:40 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	builtins(char **args, char ***env, int builtin, int *in_out)
 	else if (builtin == 2)
 		return (ft_cd(nb_args, args, env));
 	else if (builtin == 3)
-		return (ft_pwd(nb_args, args));
+		return (ft_pwd());
 	else if (builtin == 4)
 		return (ft_export(nb_args, args, env));
 	else if (builtin == 5)

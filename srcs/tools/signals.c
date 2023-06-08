@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:30:45 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/07 15:42:51 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/08 09:38:53 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ void	exit_sig(void)
 void	heredoc_sig(int sig)
 {
 	(void) sig;
-	exit(0);
-
+	exit(1);
 }
 
 void	heredoc_sigint(void)

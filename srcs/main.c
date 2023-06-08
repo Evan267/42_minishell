@@ -6,13 +6,13 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/07 15:47:06 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/08 09:43:08 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*error_line(char *line, char *unexpected_token)
+int	error_line(char *line, char *unexpected_token)
 {
 	char	*error;
 
@@ -21,7 +21,7 @@ char	*error_line(char *line, char *unexpected_token)
 	ft_putendl_fd(error, 2);
 	add_history(line);
 	free(line);
-	return (NULL);
+	return (258);
 }
 
 char	*add_readline(char *line)
@@ -58,10 +58,10 @@ int	test_lastchar(char *line)
 	return (0);
 }
 
-char	*test_line(char *line)
+char	*test_line(char *line, int *save_status, char *history_path, char **envp)
 {
 	int	test;
-	int	a;
+	int	status;
 
 	test = test_lastchar(line);
 	int	pid = fork();
@@ -71,18 +71,24 @@ char	*test_line(char *line)
 		{
 			line = add_readline(line);
 			if (!line)
-				return (NULL);
+				exit(1);
 			test = test_lastchar(line);
 		}
-		exit(1);
+		if (test == 3)
+			exit(error_line(line, "|"));
+		else if (test == 2)
+			exit(error_line(line, "newline"));
+		exit(0);
 	}
-	wait(NULL);
-	if (a)
+	waitpid(pid, &status, 0);
+	if (WEXITSTATUS(status))
+	{
+		save_history(line, history_path, envp);
+		*save_status = 258;
+		if (WEXITSTATUS(status) == 1)
+			*save_status = 1;
 		return (NULL);
-	if (test == 3)
-		return (error_line(line, "|"));
-	else if (test == 2)
-		return (error_line(line, "newline"));
+	}
 	else
 		return (line);
 }
@@ -130,6 +136,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1)
 		return (ft_putendl_fd("Aucun argument necessaire", 2), 0);
 	line = NULL;
+	status = 0;
 	envp = create_env(env);
 	reload_history(history_path, envp);
 	set_shell(1);
@@ -138,7 +145,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		set_signals();
 		line = readline_with_prompt(envp);
-		line = test_line(line);
+		line = test_line(line, &status, history_path, envp);
 		if (line && ft_strlen(line))
 		{
 			exit_sig();
