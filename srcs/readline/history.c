@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 14:43:47 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/02 11:30:53 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 15:41:51 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	reload_history(char	*history_path, char **env)
 		line_file = get_next_line(fd);
 	while (line_file)
 	{
+		line_file[ft_strlen(line_file) - 1] = 0;
 		add_history(line_file);
 		line_file = get_next_line(fd);
 	}

@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:03:21 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/08 10:46:19 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 15:45:42 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	laws_env(char *var)
 		i++;
 	if (i == 0)
 		return (put_errors(var));
-	while (ft_isalnum(var[i]) || var[i] == '_')
+	while (ft_isprint(var[i]))
 		i++;
 	if (var[i] != '\0' && var[i] != '=')
 		return (put_errors(var));

@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:12:52 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/07 13:51:56 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/08 15:21:05 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_unset(int argc, char **argv, char ***env)
 
 	i = 1;
 	if (argc == 1)
-		return (1);
+		return (0);
 	while (argv[i])
 	{
 		nb = search_var(argv[i], *env);

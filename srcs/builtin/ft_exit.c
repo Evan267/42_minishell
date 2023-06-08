@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:08:24 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/05 09:24:20 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 15:13:13 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ unsigned long long	ft_atoi_ulonglong(char *str)
 		str++;
 	}
 	if (neg)
-		value = -value;
+		value = 9223372036854775807 - value + 1;
 	return (value);
 }
 
@@ -81,6 +81,8 @@ int	str_isNumeric(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
