@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/06 09:42:29 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/07 15:47:06 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ char	*add_readline(char *line)
 {
 	char	*read;
 
+	pipe_sigint();
 	read = readline("> ");
+	if (!read)
+		return (NULL);
 	line = join_3_str(line, " ", read);
 	return (line);
 }
@@ -58,13 +61,24 @@ int	test_lastchar(char *line)
 char	*test_line(char *line)
 {
 	int	test;
+	int	a;
 
 	test = test_lastchar(line);
-	while (test == 1)
+	int	pid = fork();
+	if (pid == 0)
 	{
-		line = add_readline(line);
-		test = test_lastchar(line);
+		while (test == 1 && !getstop())
+		{
+			line = add_readline(line);
+			if (!line)
+				return (NULL);
+			test = test_lastchar(line);
+		}
+		exit(1);
 	}
+	wait(NULL);
+	if (a)
+		return (NULL);
 	if (test == 3)
 		return (error_line(line, "|"));
 	else if (test == 2)
@@ -76,10 +90,11 @@ char	*test_line(char *line)
 char	**create_env(char **env)
 {
 	char	**envp;
-	char	*var[2];
+	char	**var;
 	char	*str_shlvl;
 	int		value_shlvl;
 
+	var = malloc(sizeof(char*) * 2);
 	envp = ft_strdup2d(env);
 	str_shlvl = getvaluevar("SHLVL", envp);
 	value_shlvl = ft_atoi(str_shlvl);
@@ -89,8 +104,8 @@ char	**create_env(char **env)
 	var[0] = ft_strjoin("SHLVL=", str_shlvl);
 	var[1] = NULL;
 	free(str_shlvl);
-	envp = new_env(var, envp);
-	free(var[0]);
+	envp = new_env(&var, envp);
+	ft_clear2d(var);
 	return (envp);
 }
 
@@ -118,6 +133,7 @@ int	main(int argc, char **argv, char **env)
 	envp = create_env(env);
 	reload_history(history_path, envp);
 	set_shell(1);
+	setstop(0);
 	while (1)
 	{
 		set_signals();

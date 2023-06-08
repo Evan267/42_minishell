@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:03:21 by agallet           #+#    #+#             */
-/*   Updated: 2023/05/29 12:26:26 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/07 13:43:05 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static	int	put_errors(char *str)
 {
-	printf("bash: export: `%s\n': not a valid identifier", str);
+	printf("bash: export: `%s': not a valid identifier\n", str);
 	return (1);
 }
 
@@ -44,10 +44,10 @@ char	**del_var(char **var, int bin)
 
 	i = 0;
 	iv = 0;
-	new_var = malloc(sizeof(char *) * ft_strlen2d(var) - 1);
+	new_var = ft_calloc(sizeof(char *), ft_strlen2d(var));
 	if (!new_var)
 		return (NULL);
-	while (var[i])
+	while (var && var[i])
 	{
 		if (i != bin)
 		{

@@ -26,9 +26,11 @@ int		call_export(char **env);
 void	put_export(char	*str);
 char	**del_var(char **var, int bin);
 int		laws_env(char *var);
-char	**new_env(char **var, char **env);
+char	**new_env(char ***var, char **env);
 char	**parse_var(char **str);
 char	**same_var(char **var);
+int		fund_equal(char *str);
+int		longest_word(char *s1, char *s2);
 
 /*Exec*/
 char	*ft_path(char **args, char *envpath);
@@ -57,6 +59,9 @@ void	ctrl_d(char *promtp, char **envp, int sw);
 void	set_signals(void);
 void	exit_sig(void);
 void	heredoc_sigint(void);
+void	pipe_sigint(void);
+int		setstop(int nb);
+int		getstop(void);
 
 /*Parsing*/
 int		test_quote(char *command);/*a verifier*/

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:30:45 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/05 10:31:06 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/07 15:42:51 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,47 @@ void	heredoc_sigint(void)
 		sa_int.sa_handler = heredoc_sig;
 		sigemptyset(&sa_int.sa_mask);
 		sa_int.sa_flags = SA_RESTART;
+
+		if (sigaction(SIGINT, &sa_int, NULL) == -1)
+		{
+			perror("Erreur lors de l'appel à sigaction");
+			return ;
+		}
+	}
+}
+
+int	setstop(int nb)
+{
+	static	int	val;
+
+	if (nb >= 0)
+		val = nb;
+	return (val);
+}
+
+int	getstop(void)
+{
+	return (setstop(-1));
+}
+
+
+void	pipe_sig(int sig)
+{
+	(void) sig;
+	printf("setstop\n");
+	setstop(1);
+	exit(1);
+}
+
+void	pipe_sigint(void)
+{
+	struct	sigaction	sa_int;
+
+	if (isatty(fileno(stdin)))
+	{
+		sa_int.sa_handler = SIG_DFL;
+		sigemptyset(&sa_int.sa_mask);
+		sa_int.sa_flags = 0;
 
 		if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		{
