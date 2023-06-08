@@ -7,6 +7,7 @@ SRCS		= srcs/main.c \
 			  srcs/parsing/var_env.c \
 			  srcs/parsing/test.c \
 			  srcs/parsing/ft_split_cmds.c \
+			  srcs/parsing/ft_split_cmd.c \
 			  srcs/parsing/trim_quote.c \
 			  srcs/exec/path.c \
 			  srcs/exec/here_doc.c \
@@ -42,10 +43,10 @@ CC			= gcc
 CFLAGS		= -g -Wall -Wextra -Werror
 
 .c.o:		
-			${CC} ${CFLAGS} -I ${HEAD} -Ilibft -c $< -o ${<:.c=.o} -fsanitize=address
+			${CC} ${CFLAGS} -I ${HEAD} -Ilibft -c $< -o ${<:.c=.o} 
 
 ${NAME}:	${LFT} ${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lreadline -ltermcap -o ${NAME} -fsanitize=address
+			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lreadline -ltermcap -o ${NAME}
 
 ${LFT}:
 			make -s -C libft

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:17 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/02 15:07:06 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 11:01:18 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,20 @@ char	*replace_env_var(char *line, int status, char ***env)
 		else if (ret[i[0]] == '$' && !quote)
 		{
 			i[0]++;
-			while (ft_isalpha(ret[i[0] + i[1]]))
+			if (i[1] == 0 && ret[i[0] + i[1]] == '?')
 				i[1]++;
-			var_info[0] = ft_calloc(sizeof(char), i[1] + 1);
-			ft_strlcpy(var_info[0], ret + i[0], i[1] + 1);
-			var_info[1] = getvar(var_info[0], *env, status);
-			ret = include_var(ret, i, var_info[1]);
+			else
+			{
+				while (ft_isalpha(ret[i[0] + i[1]]))
+					i[1]++;
+			}
+			if (i[1])
+			{
+				var_info[0] = ft_calloc(sizeof(char), i[1] + 1);
+				ft_strlcpy(var_info[0], ret + i[0], i[1] + 1);
+				var_info[1] = getvar(var_info[0], *env, status);
+				ret = include_var(ret, i, var_info[1]);
+			}
 			i[0]--;
 		}
 		i[0]++;

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 09:43:08 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 12:29:03 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,39 @@ char	*add_readline(char *line)
 	return (line);
 }
 
+char	test_consecutivepipe(char *line)
+{
+	int		i;
+	char	*quote_p[2];
+	char	last_char;
+
+	quote_p[0] = NULL;
+	quote_p[1] = NULL;
+	last_char = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (line + i > quote_p[1])
+			find_quote(line + i, quote_p);
+		if (last_char == '|' && line[i] == last_char
+				&& line + i < quote_p[0] && line + i > quote_p[1])
+			return (0);
+		if (line[i] > 32 && line[i] < 127)
+			last_char = line[i];
+		i++;
+	}
+	return (last_char);
+}
+
 int	test_lastchar(char *line)
 {
 	int		i;
 	char	last_char;
 
 	i = 0;
-	last_char = 0;
-	while (line[i])
-	{
-		if (last_char == '|' && line[i] == last_char)
-			return (3);
-		if (line[i] > 32 && line[i] < 127)
-			last_char = line[i];
-		i++;
-	}
+	last_char = test_consecutivepipe(line);
+	if (!last_char)
+		return (3);
 	if (last_char == '|')
 		return (1);
 	if (last_char == '<' || last_char == '>')

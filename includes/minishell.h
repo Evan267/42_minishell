@@ -72,7 +72,10 @@ int		permission_denied(char *command);/*a verifier*/
 int		command_not_found(char *command);/*a verifier*/
 char	*getvaluevar(char *var_name, char **env);
 char	*replace_env_var(char *line, int status, char ***env);
-char	**ft_split_cmds(char const *s, char c);
+void	find_quote(char *s, char **quote);
+char	**ft_clear(char **ret);
+char	**ft_split_cmds(char const *s);
+char	**ft_split_cmd(char const *s, char c);
 char	*delete_char(char *str, char *c);
 char	*delete_quote(char *str, char c);
 char	**ft_trim_builtins(char **arg);

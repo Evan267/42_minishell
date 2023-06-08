@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:27:26 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 08:36:40 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 14:16:14 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	test_builtins(char *cmds)
 	char	**split;
 	char	*cmd_without_io;
 
-	split = ft_split_cmds(cmds, ' ');
+	split = ft_split_cmd(cmds, ' ');
 	split = ft_trim_builtins(split);
 	cmd_without_io = delete_infile_outfile(split);
-	split = ft_split_cmds(cmd_without_io, ' ');
+	split = ft_split_cmd(cmd_without_io, ' ');
 	if (!ft_strncmp(split[0], "echo", ft_strlen("echo") + 1))
 		return (ft_clear2d(split), 1);
 	else if (!ft_strncmp(split[0], "cd", ft_strlen("cd") + 1))

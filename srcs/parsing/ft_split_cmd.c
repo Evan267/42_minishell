@@ -1,29 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_cmds.c                                    :+:      :+:    :+:   */
+/*   ft_split_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 14:43:56 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 13:46:58 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_clear(char **ret)
+void	find_quote(char *s, char **quote)
 {
-	int	i;
+	char	c[2];
+	char	*strchr[2];
+	int		i;
 
 	i = 0;
-	while (ret[i])
+	if ((ft_strchr(s, '\'') && quote[1] == ft_strchr(s, '\''))
+			|| (ft_strchr(s, '\'') && quote[0] == ft_strchr(s, '\''))
+			|| (ft_strchr(s, '\"') && quote[1] == ft_strchr(s, '\"'))
+			|| (ft_strchr(s, '\"') && quote[0] == ft_strchr(s, '\"')))
+		return ;
+	if ((ft_strchr(s, '\'') && ft_strchr(s, '\'') < ft_strchr(s, '\"'))
+			|| (ft_strchr(s, '\'') && !ft_strchr(s, '\"')))
 	{
-		free(ret[i]);
-		i++;
+		c[0] = '\'';
+		c[1] = '\"';
 	}
-	free(ret);
-	return (0);
+	else
+	{
+		c[0] = '\"';
+		c[1] = '\'';
+	}
+	strchr[0] = ft_strchr(s, c[0]);
+	strchr[1] = ft_strchr(s, c[1]);
+	if (strchr[0] && ft_strchr(strchr[0] + 1, c[0]))
+	{
+		quote[0] = ft_strchr(s, c[0]);
+		quote[1] = ft_strchr(quote[0] + 1, c[0]);
+	}
+	else if (strchr[1] && ft_strchr(strchr[1] + 1, c[1]))
+	{
+		quote[0] = ft_strchr(s, c[1]);
+		quote[1] = ft_strchr(quote[0], c[1]);
+	}
+	else 
+	{
+		quote[0] = NULL;
+		quote[1] = NULL;
+	}
 }
 
 static unsigned int	ft_count_string(char *str, char c)
@@ -106,13 +134,11 @@ static char	**ft_add_part(const char *s, char c, char **ret)
 	return (ret);
 }
 
-char	**ft_split_cmds(char const *s)
+char	**ft_split_cmd(char const *s, char c)
 {
 	unsigned int	len_ptr;
 	char			**ret;
-	char			c;
 
-	c = '|';
 	if (!s)
 		return (0);
 	if (!c && *s)

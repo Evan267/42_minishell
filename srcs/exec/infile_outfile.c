@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/05 10:04:45 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 14:17:07 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char	*infile_outfile(char *cmd, int *in_out, int **pipes, int *i)
 	j = 0;
 	in_out[0] = 0;
 	in_out[1] = 0;
-	split = ft_split_cmds(cmd, ' ');
+	split = ft_split_cmd(cmd, ' ');
 	while (split[j])
 	{
 		infile(split, j, in_out);

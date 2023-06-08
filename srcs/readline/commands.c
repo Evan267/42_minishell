@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/05 09:22:28 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 14:44:46 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,13 @@ int	execute_cmds(char *line, char ***env, int status)
 	
 	line = replace_env_var(line, status, env);
 	line = delete_pipe_outfile(line);
-	cmds = ft_split_cmds(line, '|');
+	cmds = ft_split_cmds(line);
+	if (!(*cmds))
+	{
+		cmds = ft_calloc(sizeof(char *), 2);
+		cmds[0] = line;
+		cmds[1] = NULL;
+	}
 	info_cmds[0] = status;
 	info_cmds[1] = ft_strlen2d(cmds);
 	if (info_cmds[1] == 1 && test_builtins(cmds[0]))

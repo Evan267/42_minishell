@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:03:21 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/07 13:43:05 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/08 10:46:19 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 
 static	int	put_errors(char *str)
 {
-	printf("bash: export: `%s': not a valid identifier\n", str);
+	char	*error;
+
+	error = ft_strdup("minishell: export: `");
+	error = join_3_str(error, str, "': not a valid identifier");
+	ft_putendl_fd(error, 2);
+	free(error);
 	return (1);
 }
 
