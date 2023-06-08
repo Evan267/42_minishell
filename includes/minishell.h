@@ -14,6 +14,9 @@
 # include <termios.h>
 # include <termcap.h>
 
+/* Main */
+void	set_shell(int sw);
+
 /*Builtins*/
 int		ft_echo(int argc, char **argv);
 int		ft_cd(int argc, char **argv, char ***env);
@@ -62,6 +65,7 @@ void	heredoc_sigint(void);
 void	pipe_sigint(void);
 int		setstop(int nb);
 int		getstop(void);
+void	disable_sigint(void);
 
 /*Parsing*/
 int		test_quote(char *command);/*a verifier*/

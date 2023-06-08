@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 12:29:03 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 14:51:24 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*add_readline(char *line)
 {
 	char	*read;
 
-	pipe_sigint();
 	read = readline("> ");
 	if (!read)
 		return (NULL);
@@ -82,6 +81,8 @@ char	*test_line(char *line, int *save_status, char *history_path, char **envp)
 	int	status;
 
 	test = test_lastchar(line);
+	
+	pipe_sigint();
 	int	pid = fork();
 	if (pid == 0)
 	{
@@ -89,7 +90,7 @@ char	*test_line(char *line, int *save_status, char *history_path, char **envp)
 		{
 			line = add_readline(line);
 			if (!line)
-				exit(1);
+				exit(258);
 			test = test_lastchar(line);
 		}
 		if (test == 3)
@@ -99,6 +100,7 @@ char	*test_line(char *line, int *save_status, char *history_path, char **envp)
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
+	set_shell(0);
 	if (WEXITSTATUS(status))
 	{
 		save_history(line, history_path, envp);
@@ -158,10 +160,10 @@ int	main(int argc, char **argv, char **env)
 	envp = create_env(env);
 	reload_history(history_path, envp);
 	set_shell(1);
-	setstop(0);
 	while (1)
 	{
 		set_signals();
+		setstop(0);
 		line = readline_with_prompt(envp);
 		line = test_line(line, &status, history_path, envp);
 		if (line && ft_strlen(line))

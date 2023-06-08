@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:30:45 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 09:38:53 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/08 14:04:56 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,15 @@ int	getstop(void)
 
 void	pipe_sig(int sig)
 {
+	int	pid;
 	(void) sig;
-	printf("setstop\n");
+	pid = wait(NULL);
 	setstop(1);
-	exit(1);
+	if (pid == -1)
+	{
+		printf("\n");
+		exit(1);
+	}
 }
 
 void	pipe_sigint(void)
@@ -152,7 +157,7 @@ void	pipe_sigint(void)
 
 	if (isatty(fileno(stdin)))
 	{
-		sa_int.sa_handler = SIG_DFL;
+		sa_int.sa_handler = pipe_sig;
 		sigemptyset(&sa_int.sa_mask);
 		sa_int.sa_flags = 0;
 
