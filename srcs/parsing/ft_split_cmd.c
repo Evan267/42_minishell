@@ -6,11 +6,25 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 13:46:58 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/09 09:47:19 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**ft_clear(char **ret)
+{
+	int	i;
+
+	i = 0;
+	while (ret[i])
+	{
+		free(ret[i]);
+		i++;
+	}
+	free(ret);
+	return (0);
+}
 
 void	find_quote(char *s, char **quote)
 {

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 14:44:46 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/09 11:21:28 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 			cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, pipes, i);
 			close_pipes(pipes, info_cmds[1]);
 			if (test_builtins(cmds[i[0]]))
-				exec_builtins(cmds[i[0]], env, test_builtins(cmds[i[0]]), NULL);
+				exec_builtins_fork(cmds[i[0]], env, test_builtins(cmds[i[0]]), NULL);
 			else
 				exec(cmds[i[0]], env);
 		}
@@ -84,7 +84,7 @@ int	execute_cmds(char *line, char ***env, int status)
 	
 	line = replace_env_var(line, status, env);
 	line = delete_pipe_outfile(line);
-	cmds = ft_split_cmds(line);
+	cmds = ft_split_cmds(line, '|');
 	if (!(*cmds))
 	{
 		cmds = ft_calloc(sizeof(char *), 2);

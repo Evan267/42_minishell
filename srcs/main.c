@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 14:51:24 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/09 11:34:38 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,8 @@ int	main(int argc, char **argv, char **env)
 		set_signals();
 		setstop(0);
 		line = readline_with_prompt(envp);
-		line = test_line(line, &status, history_path, envp);
+		if (line && ft_strlen(line))
+			line = test_line(line, &status, history_path, envp);
 		if (line && ft_strlen(line))
 		{
 			exit_sig();

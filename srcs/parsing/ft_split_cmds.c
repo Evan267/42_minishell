@@ -6,130 +6,109 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 14:43:56 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/09 10:22:26 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_clear(char **ret)
-{
-	int	i;
-
-	i = 0;
-	while (ret[i])
-	{
-		free(ret[i]);
-		i++;
-	}
-	free(ret);
-	return (0);
+static char **ft_realloc_split(char **cmds, size_t size) {
+    char **new_cmds = malloc((size + 1) * sizeof(char *));
+    if (new_cmds) {
+        for (size_t i = 0; i < size; i++) {
+            new_cmds[i] = cmds[i];
+        }
+        new_cmds[size] = NULL;
+        free(cmds);
+    }
+    return new_cmds;
 }
 
-static unsigned int	ft_count_string(char *str, char c)
-{
-	int		count;
-	char	*strchr;
-	char	*quote_p[2];
-
-	count = 0;
-	while (*str)
-	{
-		strchr = ft_strchr(str, c);
-		find_quote(str, quote_p);
-		if ((strchr > str && strchr < quote_p[0]) || strchr > quote_p[1])
-			count++;
-		if (strchr != 0)
-			str = ft_strchr(str, c) + 1;
-		else
-		{
-			count++;
-			break ;
-		}
-	}
-	return (count);
+static int is_quote(char c) {
+    return c == '"' || c == '\'';
 }
 
-static char	**ft_part(char **ret, unsigned int *k, const char *s, char c)
+char	**ft_split_cmds(char const *s, char c)
 {
-	char	*strchr;
+    if (s == NULL)
+        return NULL;
 
-	strchr = ft_strchr(s + k[1], c);
-	if (strchr)
-	{
-		if (strchr - s > k[1])
-		{
-			ret[k[0]] = malloc(strchr - s - k[1] + 1);
-			if (!ret[k[0]])
-				return (ft_clear(ret));
-			ft_strlcpy(ret[k[0]], (char *)(s + k[1]), strchr - s - k[1] + 1);
-			(k[0])++;
-		}
-		k[1] = strchr - s + 1;
-	}
-	else if (k[2])
-	{
-		ret[k[0]] = malloc(k[2] + 1);
-		if (!ret[k[0]])
-			return (ft_clear(ret));
-		ft_strlcpy(ret[k[0]], (char *)(s + k[1]), k[2] + 1);
-		(k[0])++;
-		k[1] = k[1] + k[2];
-	}
-	return (ret);
-}
+    size_t capacity = 16;
+    size_t size = 0;
+    char **cmds = malloc(sizeof(char *) * capacity);
+    if (cmds == NULL)
+        return NULL;
 
-static char	**ft_add_part(const char *s, char c, char **ret)
-{
-	unsigned int	k[3];
-	char	*quote[2];
+    const char *start = s;
+    int in_quotes = 0;
+    char quote_char = '\0';
 
-	k[0] = 0;
-	k[1] = 0;
-	while (*s && (ft_strchr(s + k[1], c) != 0 || ft_strlen(s + k[1])))
-	{
-		k[2] = (unsigned int)ft_strlen(s + k[1]);
-		find_quote((char *)(s + k[1]), quote);
-		if (ft_strchr(s + k[1], c) > quote[0] && ft_strchr(s + k[1], c) < quote[1])
-		{
-			ret[k[0]] = ft_calloc(sizeof(char), quote[1] - quote[0] + 1);
-			if (!ret[k[0]])
-				return (ft_clear(ret));
-			ft_strlcpy(ret[k[0]], quote[0], quote[0] - quote[1] + 1);
-			(k[0])++;
-			k[1] = quote[1] - s + 1;
-		}
-		else if (!ft_part(ret, k, s, c))
-			return (0);
-	}
-	ret[k[0]] = 0;
-	return (ret);
-}
+    while (*s) {
+        if (is_quote(*s)) {
+            if (!in_quotes) {
+                in_quotes = 1;
+                quote_char = *s;
+            } else if (*s == quote_char) {
+                in_quotes = 0;
+                quote_char = '\0';
+            }
+        } else if (*s == c && !in_quotes) {
+            size_t len = s - start;
+            cmds[size] = malloc(len + 1);
+            if (cmds[size] == NULL) {
+                // Gestion d'erreur : libération de la mémoire allouée
+                for (size_t i = 0; i < size; i++) {
+                    free(cmds[i]);
+                }
+                free(cmds);
+                return NULL;
+            }
+            memcpy(cmds[size], start, len);
+            cmds[size][len] = '\0';
+            size++;
+            if (size >= capacity) {
+                cmds = ft_realloc_split(cmds, capacity);
+                if (!cmds) {
+                    // Gestion d'erreur : libération de la mémoire allouée
+                    for (size_t i = 0; i < size; i++) {
+                        free(cmds[i]);
+                    }
+                    free(cmds);
+                    return NULL;
+                }
+                capacity++;
+            }
+            start = s + 1;
+        }
+        s++;
+    }
 
-char	**ft_split_cmds(char const *s)
-{
-	unsigned int	len_ptr;
-	char			**ret;
-	char			c;
+    // Ajouter la dernière commande après la dernière occurrence de '|'
+    size_t len = s - start;
+    cmds[size] = malloc(len + 1);
+    if (cmds[size] == NULL) {
+        // Gestion d'erreur : libération de la mémoire allouée
+        for (size_t i = 0; i < size; i++) {
+            free(cmds[i]);
+        }
+        free(cmds);
+        return NULL;
+    }
+    memcpy(cmds[size], start, len);
+    cmds[size][len] = '\0';
+    size++;
 
-	c = '|';
-	if (!s)
-		return (0);
-	if (!c && *s)
-	{
-		ret = malloc (sizeof(char *) * 2);
-		if (!ret)
-			return (0);
-		ret[0] = malloc (sizeof(char) * (ft_strlen(s) + 1));
-		if (!ret[0])
-			return (ft_clear(ret));
-		ft_strlcpy(ret[0], s, ft_strlen(s) + 1);
-		ret[1] = 0;
-		return (ret);
-	}
-	len_ptr = ft_count_string((char *)s, c);
-	ret = ft_calloc(sizeof(char *), len_ptr + 1);
-	if (!ret)
-		return (0);
-	return (ft_add_part(s, c, ret));
+    // Réallouer la mémoire pour la taille exacte
+    char **result = ft_realloc_split(cmds, sizeof(char *) * (size + 1));
+    if (result == NULL) {
+        // Gestion d'erreur : libération de la mémoire allouée
+        for (size_t i = 0; i < size; i++) {
+            free(cmds[i]);
+        }
+        free(cmds);
+        return NULL;
+    }
+    result[size] = NULL;
+
+    return result;
 }
