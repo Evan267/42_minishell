@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 14:23:56 by eberger           #+#    #+#             */
-/*   Updated: 2023/04/27 14:28:11 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/12 13:03:26 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*ft_realloc(void *ptr, size_t size, size_t type)
 	str = ptr;
 	new = ft_calloc(type, size);
 	if (!new)
-		return (ft_clear(&str));
+		return (ft_clear2d(&str));
 	if (str)
 	{
 		while (str[i])

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 11:34:38 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 11:07:44 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,31 @@ char	**create_env(char **env)
 	return (envp);
 }
 
+void	unset_(char ***envp)
+{
+	char	**str;
+
+	str = malloc(sizeof(char*) * 4);
+	str[0] = ft_strdup("unset");
+	str[1] = ft_strdup("_");
+	str[2] = ft_strdup("OLDPWD");
+	str[3] = NULL;
+	ft_unset(3, str, envp);
+	ft_clear2d(str);
+}
+
+void	setoldpwd(char ***envp)
+{
+	char	**str;
+
+	str = malloc(sizeof(char*) * 3);
+	str[0] = ft_strdup("export");
+	str[1] = ft_strdup("OLDPWD");
+	str[2] = NULL;
+	ft_export(2, str, envp);
+	ft_clear2d(str);
+}
+
 void	set_shell(int sw)
 {
 	static	struct	termios	term;
@@ -160,6 +185,8 @@ int	main(int argc, char **argv, char **env)
 	envp = create_env(env);
 	reload_history(history_path, envp);
 	set_shell(1);
+	unset_(&envp);
+	setoldpwd(&envp);
 	while (1)
 	{
 		set_signals();
