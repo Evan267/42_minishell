@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:31:34 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 09:15:36 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 10:22:31 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
-void	*ft_realloc(void *ptr, size_t size, size_t type);
 char	*ft_strdup(const char *src);
 
 int		ft_strlen2d(char **str);

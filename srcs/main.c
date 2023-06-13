@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/13 11:07:44 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/13 16:32:44 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,29 @@ int	test_lastchar(char *line)
 	return (0);
 }
 
+int	str_isprint(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (ft_isprint(line[i]) && line[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*test_line(char *line, int *save_status, char *history_path, char **envp)
 {
 	int	test;
 	int	status;
+	pid_t	pid;
 
 	test = test_lastchar(line);
-	
 	pipe_sigint();
-	int	pid = fork();
+	pid = fork();
 	if (pid == 0)
 	{
 		while (test == 1 && !getstop())
@@ -183,18 +197,18 @@ int	main(int argc, char **argv, char **env)
 	line = NULL;
 	status = 0;
 	envp = create_env(env);
-	reload_history(history_path, envp);
-	set_shell(1);
 	unset_(&envp);
 	setoldpwd(&envp);
+	reload_history(history_path, envp);
+	set_shell(1);
 	while (1)
 	{
 		set_signals();
 		setstop(0);
 		line = readline_with_prompt(envp);
-		if (line && ft_strlen(line))
+		if (line && ft_strlen(line) && str_isprint(line))
 			line = test_line(line, &status, history_path, envp);
-		if (line && ft_strlen(line))
+		if (line && ft_strlen(line) && str_isprint(line))
 		{
 			exit_sig();
 			save_history(line, history_path, envp);

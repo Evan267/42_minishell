@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 11:21:28 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 16:26:47 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 		{
 			cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, pipes, i);
 			close_pipes(pipes, info_cmds[1]);
+			if (!cmds[i[0]])
+				exit(1);
 			if (test_builtins(cmds[i[0]]))
 				exec_builtins_fork(cmds[i[0]], env, test_builtins(cmds[i[0]]), NULL);
 			else
@@ -69,6 +71,8 @@ int	one_builtin(char *cmd, char ***env, int status)
 	i[1] = 1;
 	saved_dup(in_out);
 	tmp = infile_outfile(tmp, in_out, NULL, i);
+	if (!tmp)
+		return (1);
 	status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
 	dup_in_out(in_out[2], in_out[3]);
 	free(tmp);

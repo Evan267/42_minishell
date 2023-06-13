@@ -6,109 +6,79 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 10:22:26 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 13:16:51 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char **ft_realloc_split(char **cmds, size_t size) {
-    char **new_cmds = malloc((size + 1) * sizeof(char *));
-    if (new_cmds) {
-        for (size_t i = 0; i < size; i++) {
-            new_cmds[i] = cmds[i];
-        }
-        new_cmds[size] = NULL;
-        free(cmds);
-    }
-    return new_cmds;
-}
-
-static int is_quote(char c) {
-    return c == '"' || c == '\'';
-}
-
-char	**ft_split_cmds(char const *s, char c)
+static unsigned int	count_words(const char *str, char c)
 {
-    if (s == NULL)
-        return NULL;
+	int		count;
+	char	*strchr;
+	char	*quote_p[2];
 
-    size_t capacity = 16;
-    size_t size = 0;
-    char **cmds = malloc(sizeof(char *) * capacity);
-    if (cmds == NULL)
-        return NULL;
+	count = 0;
+	while (*str)
+	{
+		strchr = ft_strchr(str, c);
+		find_quote((char *)str, quote_p);
+		if ((strchr > str && strchr < quote_p[0]) || strchr > quote_p[1])
+			count++;
+		if (strchr != 0)
+			str = ft_strchr(str, c) + 1;
+		else
+		{
+			count++;
+			break ;
+		}
+	}
+	return (count);
+}
 
-    const char *start = s;
-    int in_quotes = 0;
-    char quote_char = '\0';
+static char	*word_dup(const char *str, int start, int finish)
+{
+	char	*word;
+	int		i;
 
-    while (*s) {
-        if (is_quote(*s)) {
-            if (!in_quotes) {
-                in_quotes = 1;
-                quote_char = *s;
-            } else if (*s == quote_char) {
-                in_quotes = 0;
-                quote_char = '\0';
-            }
-        } else if (*s == c && !in_quotes) {
-            size_t len = s - start;
-            cmds[size] = malloc(len + 1);
-            if (cmds[size] == NULL) {
-                // Gestion d'erreur : libération de la mémoire allouée
-                for (size_t i = 0; i < size; i++) {
-                    free(cmds[i]);
-                }
-                free(cmds);
-                return NULL;
-            }
-            memcpy(cmds[size], start, len);
-            cmds[size][len] = '\0';
-            size++;
-            if (size >= capacity) {
-                cmds = ft_realloc_split(cmds, capacity);
-                if (!cmds) {
-                    // Gestion d'erreur : libération de la mémoire allouée
-                    for (size_t i = 0; i < size; i++) {
-                        free(cmds[i]);
-                    }
-                    free(cmds);
-                    return NULL;
-                }
-                capacity++;
-            }
-            start = s + 1;
-        }
-        s++;
-    }
+	i = 0;
+	word = malloc((finish - start + 1) * sizeof(char));
+	while (start < finish)
+		word[i++] = str[start++];
+	word[i] = '\0';
+	return (word);
+}
 
-    // Ajouter la dernière commande après la dernière occurrence de '|'
-    size_t len = s - start;
-    cmds[size] = malloc(len + 1);
-    if (cmds[size] == NULL) {
-        // Gestion d'erreur : libération de la mémoire allouée
-        for (size_t i = 0; i < size; i++) {
-            free(cmds[i]);
-        }
-        free(cmds);
-        return NULL;
-    }
-    memcpy(cmds[size], start, len);
-    cmds[size][len] = '\0';
-    size++;
+char		**ft_split_cmds(char const *s, char c)
+{
+	size_t	i[2];
+	int		index;
+	char	**split;
+	char	*quote_p[2];
 
-    // Réallouer la mémoire pour la taille exacte
-    char **result = ft_realloc_split(cmds, sizeof(char *) * (size + 1));
-    if (result == NULL) {
-        // Gestion d'erreur : libération de la mémoire allouée
-        for (size_t i = 0; i < size; i++) {
-            free(cmds[i]);
-        }
-        free(cmds);
-        return NULL;
-    }
-    result[size] = NULL;
-
-    return result;
+	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
+		return (0);
+	i[0] = 0;
+	i[1] = 0;
+	index = -1;
+	while (i[0] <= ft_strlen(s))
+	{
+		find_quote((char *)s + i[0], quote_p);
+		if (s + i[0] == quote_p[0])
+		{
+			if (s[i[0]] != c && index < 0)
+				index = i[0];
+			i[0] = quote_p[1] - s + 1;
+		}
+		if (s[i[0]] != c && index < 0)
+			index = i[0];
+		else if ((s[i[0]] == c || i[0] == ft_strlen(s)) && index >= 0)
+		{
+			split[(i[1])++] = word_dup(s, index, i[0]);
+			index = -1;
+		}
+		(i[0])++;
+	}
+	split[i[1]] = 0;
+	return (split);
 }

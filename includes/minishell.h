@@ -80,7 +80,6 @@ char	*replace_env_var(char *line, int status, char ***env);
 void	find_quote(char *s, char **quote);
 char	**ft_clear(char **ret);
 char	**ft_split_cmds(char const *s, char c);
-char	**ft_split_cmd(char const *s, char c);
 char	*delete_char(char *str, char *c);
 char	*delete_quote(char *str, char c);
 char	**ft_trim_builtins(char **arg);

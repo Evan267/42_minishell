@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:27:26 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 09:58:12 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 16:29:04 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	test_builtins(char *cmds)
 	split = ft_trim_builtins(split);
 	cmd_without_io = delete_infile_outfile(split);
 	split = ft_split_cmds(cmd_without_io, ' ');
+	if (!split[0])
+		return (ft_clear2d(split), 0);
 	if (!ft_strncmp(split[0], "echo", ft_strlen("echo") + 1))
 		return (ft_clear2d(split), 1);
 	else if (!ft_strncmp(split[0], "cd", ft_strlen("cd") + 1))

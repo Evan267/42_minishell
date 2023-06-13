@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 11:23:08 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/13 15:25:30 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ void	exec(char *cmd, char ***env)
 	char	*path;
 	char	**args;
 
-	*env = NULL;
 	args = ft_split_cmds(cmd, ' ');
-	args[0] = delete_quote(args[0], '\'');
-	args[0] = delete_quote(args[0], '\"');
+	args = ft_trim_builtins(args);
 	path = ft_path(args, getenv("PATH"));
 	if (execve(path, args, *env) == -1)
 	{
