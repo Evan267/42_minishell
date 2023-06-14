@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:10:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/13 16:32:44 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 11:42:18 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	str_isprint(char *line)
 	return (0);
 }
 
-char	*test_line(char *line, int *save_status, char *history_path, char **envp)
+char	*test_line(char *line, int *save_status, char **history_path, char **envp)
 {
 	int	test;
 	int	status;
@@ -134,10 +134,12 @@ char	**create_env(char **env)
 	char	*str_shlvl;
 	int		value_shlvl;
 
+	value_shlvl = 0;
 	var = malloc(sizeof(char*) * 2);
 	envp = ft_strdup2d(env);
 	str_shlvl = getvaluevar("SHLVL", envp);
-	value_shlvl = ft_atoi(str_shlvl);
+	if (str_shlvl)
+		value_shlvl = ft_atoi(str_shlvl);
 	value_shlvl++;
 	free(str_shlvl);
 	str_shlvl = ft_itoa(value_shlvl);
@@ -186,20 +188,21 @@ void	set_shell(int sw)
 
 int	main(int argc, char **argv, char **env)
 {
-	char		*line;
-	static char	*history_path;
-	int			status;
-	char		**envp;
+	char	*line;
+	char	*history_path;
+	int		status;
+	char	**envp;
 	(void)argv;
 
 	if (argc > 1)
 		return (ft_putendl_fd("Aucun argument necessaire", 2), 0);
 	line = NULL;
+	history_path = NULL;
 	status = 0;
 	envp = create_env(env);
 	unset_(&envp);
 	setoldpwd(&envp);
-	reload_history(history_path, envp);
+	reload_history(&history_path, envp);
 	set_shell(1);
 	while (1)
 	{
@@ -207,11 +210,11 @@ int	main(int argc, char **argv, char **env)
 		setstop(0);
 		line = readline_with_prompt(envp);
 		if (line && ft_strlen(line) && str_isprint(line))
-			line = test_line(line, &status, history_path, envp);
+			line = test_line(line, &status, &history_path, envp);
 		if (line && ft_strlen(line) && str_isprint(line))
 		{
 			exit_sig();
-			save_history(line, history_path, envp);
+			save_history(line, &history_path, envp);
 			status = execute_cmds(line, &envp, status);
 			set_shell(0);
 		}

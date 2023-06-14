@@ -88,7 +88,7 @@ char	*delete_pipe_outfile(char *line);
 /* Readline */
 char	*readline_with_prompt(char **env);
 int		execute_cmds(char *line, char **env[], int status);
-void	save_history(char *line, char *history_file, char **env);
-void	reload_history(char *history_file, char **env);
+void	save_history(char *line, char **history_file, char **env);
+void	reload_history(char **history_file, char **env);
 
 # endif

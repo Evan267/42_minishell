@@ -6,27 +6,32 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:17 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/08 11:01:18 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 12:32:09 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-char	*change_var(char *ret, int	*i, char *var)
+char	*change_var(char **ret, int	*i, char *var)
 {
 	char	*new;
 	int		len_var;
 
 	len_var = ft_strlen(var);
-	new = ft_calloc(sizeof(char), ft_strlen(ret) - i[1] + 1 + len_var);
-	ft_strlcat(new, ret, i[0]);
+	new = ft_calloc(sizeof(char), ft_strlen(*ret) - i[1] + 1 + len_var);
+	if (!new)
+	{
+		free(*ret);
+		return (NULL);
+	}
+	ft_strlcat(new, *ret, i[0]);
 	ft_strlcat(new, var, ft_strlen(new) + len_var + 1);
-	ft_strlcat(new, ret + i[0] + i[1], ft_strlen(ret) - i[1] + 1 + len_var);
-	free(ret);
+	ft_strlcat(new, *ret + i[0] + i[1], ft_strlen(*ret) - i[1] + 1 + len_var);
+	free(*ret);
 	return (new);
 }
 
-char	*include_var(char *ret, int *i, char *var)
+char	*include_var(char **ret, int *i, char *var)
 {
 	char	var_null[1];
 
@@ -56,6 +61,8 @@ char	*getvaluevar(char *var_name, char **env)
 		}
 		i++;
 	}
+	if (test)
+		free(test);
 	return (NULL);
 }
 
@@ -71,40 +78,45 @@ char	*getvar(char *var_name, char **env, int status)
 
 char	*replace_env_var(char *line, int status, char ***env)
 {
-	char	*ret;
 	char	*var_info[2];
 	int		i[2];
 	int		quote;
 
 	i[0] = 0;
 	quote = 0;
-	ret = ft_strdup(line);
-	while (ret[i[0]])
+	while (line[i[0]])
 	{
+		var_info[0] = NULL;
+		var_info[1] = NULL;
 		i[1] = 0;
-		if (ret[i[0]] == '\'')
+		if (line[i[0]] == '\'')
 			quote = !quote;
-		else if (ret[i[0]] == '$' && !quote)
+		else if (line[i[0]] == '$' && !quote)
 		{
 			i[0]++;
-			if (i[1] == 0 && ret[i[0] + i[1]] == '?')
+			if (i[1] == 0 && line[i[0] + i[1]] == '?')
 				i[1]++;
 			else
 			{
-				while (ft_isalpha(ret[i[0] + i[1]]))
+				while (ft_isalpha(line[i[0] + i[1]]))
 					i[1]++;
 			}
 			if (i[1])
 			{
 				var_info[0] = ft_calloc(sizeof(char), i[1] + 1);
-				ft_strlcpy(var_info[0], ret + i[0], i[1] + 1);
+				if (!var_info[0])
+					return (line);
+				ft_strlcpy(var_info[0], line + i[0], i[1] + 1);
 				var_info[1] = getvar(var_info[0], *env, status);
-				ret = include_var(ret, i, var_info[1]);
+				line = include_var(&line, i, var_info[1]);
+				if (var_info[0])
+					free(var_info[0]);
+				if (var_info[1])
+					free(var_info[1]);
 			}
 			i[0]--;
 		}
 		i[0]++;
 	}
-	free(line);
-	return (ret);
+	return (line);
 }

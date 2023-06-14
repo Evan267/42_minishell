@@ -13,29 +13,26 @@ static char	*user_place(char **env)
 	place = ft_strjoin(tmp, " ");
 	free(tmp);
 	tmp = ft_strjoin(user, place);
+	free(user);
+	free(place);
 	return (tmp);
 }
 
-static char	*last_directory(void)
+static char	*last_directory(char *cwd)
 {
 	char	*last;
-	char	*var;
 	char	**directory;
 	int		i;
 
 	i = 0;
-	var = NULL;
 	last = NULL;
-	var = getcwd(var, 0);
-	directory = ft_split(var, '/');
-	free(var);
+	directory = ft_split(cwd, '/');
 	while (directory[i])
 		i++;
 	if (i)
-	{
 		last = ft_strjoin(directory[i -1], " % ");
-		ft_clear2d(directory);
-	}
+	i = 0;
+	ft_clear2d(directory);
 	return (last);
 }
 
@@ -52,7 +49,7 @@ char	*add_second_part(char **env)
 			&& ft_strncmp(cwd, test, ft_strlen(cwd)) == 0)
 		ret = ft_strdup("~ % ");
 	else
-		ret = last_directory();
+		ret = last_directory(cwd);
 	if (!ret)
 		ret = ft_strdup("% ");
 	free(test);
@@ -72,7 +69,11 @@ char	*readline_with_prompt(char **env)
 	second_part = add_second_part(env);
 	str = ft_strjoin(first_part, second_part);
 	free(second_part);
+	second_part = NULL;
 	free(first_part);
+	first_part = NULL;
+	if (!str)
+		str = ft_strdup("minishell$ ");
 	line = readline(str);
 	if (!line)
 		ctrl_d(str, env, 1);

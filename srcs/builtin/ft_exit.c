@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:08:24 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/08 15:13:13 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 10:58:45 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	ft_exit(int argc, char **argv, char ***env, int *in_out)
 	}
 	if (in_out)
 		ft_putendl_fd("exit", in_out[3]);
-	free(*env);
+	ft_clear2d(*env);
 	exit(code_exit);
 	return (0);
 }
