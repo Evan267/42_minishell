@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:45:50 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/09 10:07:53 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:15:49 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	ft_export(int argc, char **argv, char ***env)
 	var = same_var(var);
 	new_txt = new_env(&var, *env);
 	ft_clear2d(var);
-	ft_clear2d(*env);
 	*env = new_txt;
 	return (ret);
 }

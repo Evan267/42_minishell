@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:59:35 by agallet           #+#    #+#             */
-/*   Updated: 2023/05/29 12:32:59 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:20:58 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ int	call_export(char **env)
 		put_export(temp);
 		nb[0] = nb[0] + 1;
 	}
+	free(tab);
 	return (0);
 }
