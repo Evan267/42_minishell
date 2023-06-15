@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 12:23:10 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 13:23:30 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ char	*infile_outfile(char *cmd, int *in_out, int *status)
 	{
 		infile(split, j, in_out, status);
 		outfile(split, j, in_out);
-		if (in_out[1] == -1)
+		if (in_out[1] == -1 || *status == 1)
 			return (NULL);
 		j++;
 	}

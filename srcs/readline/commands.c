@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
 /*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
-/*   Updated: 2023/06/15 12:45:33 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 13:24:36 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 	pid = malloc(sizeof(pid_t) * i[1]);
 	while (i[0] < info_cmds[1])
 	{
+		info_cmds[0] = 0;
 		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, info_cmds);
 		pid[i[0]] = fork();
 		if (pid[i[0]] == -1)
