@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 12:41:05 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 14:00:09 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,24 @@ void	exec(char *cmd, char ***env)
 {
 	char	*path;
 	char	**args;
+	struct	stat	info;
 
 	args = ft_split_cmds(cmd, ' ');
 	args = ft_trim_builtins(args);
 	path = ft_path(args, getenv("PATH"));
+	stat(path, &info);
 	if (execve(path, args, *env) == -1)
 	{
+		if (S_ISDIR(info.st_mode))
+		{
+			if ((path[0] == '.' || path[0] == '/'))
+			{
+				ft_putendl_fd(" is a directory", 2);
+				exit (126);
+			}
+			else
+				command_not_found(path);
+		}
 		perror("execve");
 		exit(127);
 	}

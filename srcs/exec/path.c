@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/04/26 14:10:27 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 14:00:10 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*find_path(char *command, char *envp_path)
 	char	*cmd;
 	int		i;
 
+	if (ft_strlen(command) == 0)
+		return (NULL);
 	paths = ft_split(envp_path, ':');
 	cmd = ft_strjoin("/", command);
 	i = 0;
@@ -39,11 +41,27 @@ char	*find_path(char *command, char *envp_path)
 char	*ft_path(char **args, char *envpath)
 {
 	char	*path;
-
+	struct	stat	info;
+	
 	path = find_path(args[0], envpath);
-	if (!access(path, F_OK) && access(path, X_OK))
+	stat(path, &info);
+	if (!access(path, F_OK) && access(path, X_OK) && !S_ISDIR(info.st_mode))
+	{
+		if (args[0][0] != '.' && args[0][0] != '/')
+		{
+			ft_putendl_fd(" command not found", 2);
+			exit(127);
+		}
 		permission_denied(args[0]);
+	}
 	else if (access(path, X_OK))
+	{
+		if (args[0][0] == '.' || args[0][0] == '/')
+		{
+			ft_putendl_fd(" No such file or directory", 2);
+			exit(127);
+		}
 		command_not_found(args[0]);
+	}
 	return (path);
 }

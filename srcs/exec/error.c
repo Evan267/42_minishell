@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/04/26 14:10:27 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 13:44:58 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	permission_denied(char *command)
 	char	*error[2];
 
 	error[0] = ft_strjoin("pipe: ", command);
-	error[1] = ft_strjoin(error[0], ": permission denied");
+	error[1] = ft_strjoin(error[0], ": Permission denied");
 	ft_putendl_fd(error[1], 2);
 	free(error[0]);
 	free(error[1]);
