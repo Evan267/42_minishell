@@ -6,11 +6,12 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 13:24:05 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/07 13:41:41 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:13:19 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 int	nbdiff_env_var(char **var, char **env)
 {
 	int	i;
@@ -118,5 +119,6 @@ char	**new_env(char ***var, char **env)
 		refresh_index(tab);
 	}
 	completed_env(new_env, (*var), tab);
+	ft_clear2d(env);
 	return (new_env);
 }

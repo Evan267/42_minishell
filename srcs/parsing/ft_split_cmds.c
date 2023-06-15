@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/13 13:16:51 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:18:38 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static unsigned int	count_words(const char *str, char c)
 	char	*quote_p[2];
 
 	count = 0;
+	quote_p[0] = NULL;
+	quote_p[1] = NULL;
 	while (*str)
 	{
 		strchr = ft_strchr(str, c);
@@ -56,6 +58,8 @@ char		**ft_split_cmds(char const *s, char c)
 	char	**split;
 	char	*quote_p[2];
 
+	quote_p[0] = NULL;
+	quote_p[1] = NULL;
 	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
 		return (0);
 	i[0] = 0;

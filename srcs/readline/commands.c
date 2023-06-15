@@ -6,7 +6,11 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/06/14 18:01:38 by agallet          ###   ########.fr       */
+=======
+/*   Updated: 2023/06/14 14:57:00 by eberger          ###   ########.fr       */
+>>>>>>> 8c65f455fc9a64dcc9e01db910576ef153e454fd
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +115,7 @@ int	execute_cmds(char *line, char ***env, int status)
 		stop_pipes(pipes, info_cmds[1]);
 		info_cmds[0] = wait_all_forks(pid, info_cmds[1]);
 	}
+	free(line);
 	ft_clear2d(cmds);
 	return (info_cmds[0]);
 }
