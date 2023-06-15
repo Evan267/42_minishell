@@ -4,9 +4,9 @@
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/14 14:57:00 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/15 12:45:33 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 	pid = malloc(sizeof(pid_t) * i[1]);
 	while (i[0] < info_cmds[1])
 	{
+		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, info_cmds);
 		pid[i[0]] = fork();
 		if (pid[i[0]] == -1)
 		{
@@ -31,7 +32,13 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 		}
 		else if (pid[i[0]] == 0)
 		{
-			cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, pipes, i);
+			if (info_cmds[0])
+			{
+				close_pipes(pipes, info_cmds[1]);
+				close_infile_outfile(in_out[0], in_out[1]);
+				exit(info_cmds[0]);
+			}
+			after_fork(in_out, pipes, i);
 			close_pipes(pipes, info_cmds[1]);
 			if (!cmds[i[0]])
 				exit(1);
@@ -70,10 +77,12 @@ int	one_builtin(char *cmd, char ***env, int status)
 	i[0] = 0;
 	i[1] = 1;
 	saved_dup(in_out);
-	tmp = infile_outfile(tmp, in_out, NULL, i);
+	tmp = infile_outfile(tmp, in_out, &status);
+	after_fork(in_out, NULL, i);
 	if (!tmp)
 		return (1);
-	status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
+	if (!status)
+		status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
 	dup_in_out(in_out[2], in_out[3]);
 	free(tmp);
 	return (status);
@@ -95,7 +104,7 @@ int	execute_cmds(char *line, char ***env, int status)
 		cmds[0] = line;
 		cmds[1] = NULL;
 	}
-	info_cmds[0] = status;
+	info_cmds[0] = 0;
 	info_cmds[1] = ft_strlen2d(cmds);
 	if (info_cmds[1] == 1 && test_builtins(cmds[0]))
 		info_cmds[0] = one_builtin(cmds[0], env, info_cmds[0]);
