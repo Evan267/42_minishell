@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:14:23 by eberger           #+#    #+#             */
-/*   Updated: 2023/05/26 16:10:47 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 16:15:06 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	dup_cond(int *in_out, int *i, int **pipes)
    			out = pipes[i[0]][1];
 		}
 	}
-	if (in_out[0] != 0)
+	if (in_out[0] > 0)
 		in = in_out[0];
-	if (in_out[1] != 0)
+	if (in_out[1] > 1)
 		out = in_out[1];
 	dup_in_out(in, out);
 }

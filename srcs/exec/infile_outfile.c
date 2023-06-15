@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/13 16:02:49 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 16:19:03 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ int	open_infile(char *file_or_limiter, int is_heredoc)
 		if (ret == -1)
 		{
 			error_open(file_or_limiter, ret, 0);
-			exit(1);
+			return(-1);
 		}
 	}
 	else if (file_or_limiter && is_heredoc)
 	{
 		ret = here_doc(file_or_limiter);
 	}
+	if (file_or_limiter)
+		free(file_or_limiter);
 	return (ret);
 }
 
@@ -78,8 +80,6 @@ void	infile(char **split, int i, int *in_out)
 			file = ft_strdup(split[i + 1]);
 		in_out[0] = open_infile(file, 0);
 	}
-	if (file)
-		free(file);
 }
 
 void	outfile(char **split, int i, int *in_out)
