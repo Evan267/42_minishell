@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:25:14 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/05 10:25:10 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 18:01:53 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,16 @@ void	child_here_doc(int *pipes, char *limiter)
 	exit(0);
 }
 
-int	here_doc(char *limiter)
+int	here_doc(char *limiter, int *status)
 {
 	int		pipes[2];
 	pid_t	pid;
-	int		status;
 
 	if (pipe(pipes) == -1)
 	{	
 		perror("pipe");
 		exit(127);
 	}
-	heredoc_sigint();
 	pid = fork();
 	if (pid == -1)
 	{
@@ -50,8 +48,11 @@ int	here_doc(char *limiter)
 		exit(127);
 	}
 	else if (pid == 0)
+	{
+		heredoc_sigint();
 		child_here_doc(pipes, limiter);
-	waitpid(pid, &status, 0);
+	}
+	waitpid(pid, status, 0);
 	close(pipes[1]);
 	return (pipes[0]);
 }

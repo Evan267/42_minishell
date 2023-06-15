@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/13 16:26:47 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/14 18:01:38 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 	int		i[2];
 	pid_t	*pid;
 	int		in_out[2];
+	int		status;
 
 	i[0] = 0;
 	i[1] = info_cmds[1];
 	pid = malloc(sizeof(pid_t) * i[1]);
 	while (i[0] < info_cmds[1])
 	{
-		pid[i[0]] = fork();
+		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, &status);
+		if (!status)
+			pid[i[0]] = fork();
 		if (pid[i[0]] == -1)
 		{
 			perror("fork");
@@ -31,7 +34,7 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 		}
 		else if (pid[i[0]] == 0)
 		{
-			cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, pipes, i);
+			after_fork(in_out, pipes, i);
 			close_pipes(pipes, info_cmds[1]);
 			if (!cmds[i[0]])
 				exit(1);
@@ -70,10 +73,12 @@ int	one_builtin(char *cmd, char ***env, int status)
 	i[0] = 0;
 	i[1] = 1;
 	saved_dup(in_out);
-	tmp = infile_outfile(tmp, in_out, NULL, i);
+	tmp = infile_outfile(tmp, in_out, &status);
+	after_fork(in_out, NULL, i);
 	if (!tmp)
 		return (1);
-	status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
+	if (!status)
+		status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
 	dup_in_out(in_out[2], in_out[3]);
 	free(tmp);
 	return (status);
