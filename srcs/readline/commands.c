@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
 /*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
-/*   Updated: 2023/06/15 13:41:13 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/16 14:17:12 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 	while (i[0] < info_cmds[1])
 	{
 		info_cmds[0] = 0;
-		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, info_cmds);
+		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, info_cmds, env);
 		pid[i[0]] = fork();
 		if (pid[i[0]] == -1)
 		{
@@ -78,10 +78,10 @@ int	one_builtin(char *cmd, char ***env, int status)
 	i[0] = 0;
 	i[1] = 1;
 	saved_dup(in_out);
-	tmp = infile_outfile(tmp, in_out, &status);
-	after_fork(in_out, NULL, i);
+	tmp = infile_outfile(tmp, in_out, &status, env);
 	if (!tmp)
-		return (1);
+		return (dup_in_out(in_out[2], in_out[3]), 1);
+	after_fork(in_out, NULL, i);
 	if (!status)
 		status = exec_builtins(tmp, env, test_builtins(tmp), in_out);
 	dup_in_out(in_out[2], in_out[3]);

@@ -49,10 +49,10 @@ void	stop_pipes(int **pipes, int len_cmds);
 int		**create_pipes(int len_cmds);
 void	close_pipes(int **pipes, int len_cmds);
 void	close_infile_outfile(int in, int out);
-char	*infile_outfile(char *cmd, int *in_out, int *status);
+char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env);
 void	after_fork(int *in_out, int **pipes, int *i);
 char	*delete_infile_outfile(char **split);
-int		here_doc(char *limiter, int *status);
+int		here_doc(char *limiter, int status, char ***env);
 void	error_open(char *file, int fd, int must_exit);
 
 /*Tools*/

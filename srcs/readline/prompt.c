@@ -7,6 +7,8 @@ static char	*user_place(char **env)
 	char	*place;
 
 	tmp = getvaluevar("USER", env);
+	if (!tmp)
+		return (NULL);
 	user = ft_strjoin(tmp, "@");
 	free(tmp);
 	tmp = ft_strdup("MiNiShElL");
@@ -67,13 +69,21 @@ char	*readline_with_prompt(char **env)
 
 	first_part = user_place(env);
 	second_part = add_second_part(env);
-	str = ft_strjoin(first_part, second_part);
-	free(second_part);
-	second_part = NULL;
-	free(first_part);
-	first_part = NULL;
-	if (!str)
+	str = NULL;
+	if (!first_part)
 		str = ft_strdup("minishell$ ");
+	if (!str && !second_part)
+		str = ft_strdup("minishell$ ");
+	else if (str && second_part)
+		free(second_part);
+	else
+	{
+		str = ft_strjoin(first_part, second_part);
+		free(second_part);
+		second_part = NULL;
+		free(first_part);
+		first_part = NULL;
+	}
 	line = readline(str);
 	if (!line)
 		ctrl_d(str, env, 1);

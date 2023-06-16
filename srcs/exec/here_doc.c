@@ -6,13 +6,13 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:25:14 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 11:09:48 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/16 14:11:10 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child_here_doc(int *pipes, char *limiter)
+void	child_here_doc(int *pipes, char *limiter, int status, char ***env)
 {
 	char	*tmp;
 
@@ -23,6 +23,7 @@ void	child_here_doc(int *pipes, char *limiter)
 	while (ft_strncmp(limiter, tmp, ft_strlen(tmp))
 		|| ft_strlen(limiter) > ft_strlen(tmp))
 	{
+		tmp = replace_env_var(tmp, status, env);
 		ft_putendl_fd(tmp, pipes[1]);
 		free(tmp);
 		tmp = readline("> ");
@@ -31,7 +32,7 @@ void	child_here_doc(int *pipes, char *limiter)
 	exit(0);
 }
 
-int	here_doc(char *limiter, int *status)
+int	here_doc(char *limiter, int status, char ***env)
 {
 	int		pipes[2];
 	pid_t	pid;
@@ -51,10 +52,9 @@ int	here_doc(char *limiter, int *status)
 	else if (pid == 0)
 	{
 		heredoc_sigint();
-		child_here_doc(pipes, limiter);
+		child_here_doc(pipes, limiter, status, env);
 	}
 	waitpid(pid, &status_wait, 0);
-	*status = WEXITSTATUS(status_wait);
 	close(pipes[1]);
 	return (pipes[0]);
 }
