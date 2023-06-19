@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/16 13:40:59 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/16 15:00:14 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env)
 	{
 		perror("minishell");
 		*status = 1;
+		ft_clear2d(split);
+		free(cmd);
 		return (NULL);
 	}
 	ret = delete_infile_outfile(split);

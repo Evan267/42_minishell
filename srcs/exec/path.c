@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 14:00:10 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/19 10:14:53 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ char	*find_path(char *command, char *envp_path)
 
 char	*ft_path(char **args, char *envpath)
 {
-	char	*path;
-	struct	stat	info;
+	char		*path;
+	struct stat	info;
 	
 	path = find_path(args[0], envpath);
 	stat(path, &info);
@@ -49,7 +49,7 @@ char	*ft_path(char **args, char *envpath)
 	{
 		if (args[0][0] != '.' && args[0][0] != '/')
 		{
-			ft_putendl_fd(" command not found", 2);
+			ft_putendl_fd("minishell: command not found", 2);
 			exit(127);
 		}
 		permission_denied(args[0]);
@@ -58,7 +58,7 @@ char	*ft_path(char **args, char *envpath)
 	{
 		if (args[0][0] == '.' || args[0][0] == '/')
 		{
-			ft_putendl_fd(" No such file or directory", 2);
+			ft_putendl_fd("minishell: No such file or directory", 2);
 			exit(127);
 		}
 		command_not_found(args[0]);
