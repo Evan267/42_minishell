@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:30:45 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 12:05:23 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 11:48:52 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,14 @@ void	exit_sigint(int	sig, siginfo_t *info, void *context)
 	{
 		pid = wait(NULL);
 	}
-	if (main_pid == info->si_pid)
+	if (main_pid == info->si_pid && sig != SIGQUIT)
 		printf("\n");
 }
 
 void	exit_sig(void)
 {
-	struct	sigaction	sa_int;
+	struct	sigaction	sa_int;	
+	struct	sigaction	sa_quit;
 
 	if (isatty(fileno(stdin)))
 	{
@@ -96,6 +97,11 @@ void	exit_sig(void)
 			perror("Erreur lors de l'appel à sigaction");
 			return ;
 		}
+		sa_quit.sa_sigaction = exit_sigint;
+        sigemptyset(&sa_quit.sa_mask);
+        sa_quit.sa_flags = 0;
+		if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
+			printf("Erreur lors de l'enregistrement du gestionnaire de signal");
 	}
 }
 
