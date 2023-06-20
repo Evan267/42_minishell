@@ -50,6 +50,9 @@ int		**create_pipes(int len_cmds);
 void	close_pipes(int **pipes, int len_cmds);
 void	close_infile_outfile(int in, int out);
 char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env);
+void	infos_cmd(int **pipes, int *info_cmds, int *in_out, int *i);
+void	init_cmds(int *i, int *infos_cmds, int **pid);
+void	check_fork(int *pid, int *i);
 void	after_fork(int *in_out, int **pipes, int *i);
 char	*delete_infile_outfile(char **split);
 int		here_doc(char *limiter, int status, char ***env);
@@ -60,14 +63,17 @@ char	*join_3_str(char *str1, char *str2, char *str3);
 char	*ft_joinsplit(char **split);
 void	trim_by_char(char **ret, char c);
 char	*empty_str(char *str);
+void	disable_sigint(void);
+
+/*Signals*/
 void	ctrl_d(char *promtp, char **envp, int sw);
 void	set_signals(void);
 void	exit_sig(void);
+void	exit_sigint(int	sig, siginfo_t *info, void *context);
 void	heredoc_sigint(void);
 void	pipe_sigint(void);
 int		setstop(int nb);
 int		getstop(void);
-void	disable_sigint(void);
 
 /*Parsing*/
 int		permission_denied(char *command);

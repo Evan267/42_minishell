@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
 /*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
-/*   Updated: 2023/06/20 10:03:45 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 16:11:24 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,16 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 	pid_t	*pid;
 	int		in_out[2];
 
-	i[0] = 0;
-	i[1] = info_cmds[1];
-	pid = malloc(sizeof(pid_t) * i[1]);
+	init_cmds(i, info_cmds, &pid);
 	while (i[0] < info_cmds[1])
 	{
 		info_cmds[0] = 0;
 		cmds[i[0]] = infile_outfile(cmds[i[0]], in_out, info_cmds, env);
 		pid[i[0]] = fork();
-		if (pid[i[0]] == -1)
+		check_fork(pid, i);
+		if (pid[i[0]] == 0)
 		{
-			perror("fork");
-			exit(127);
-		}
-		else if (pid[i[0]] == 0)
-		{
-			if (info_cmds[0])
-			{
-				close_pipes(pipes, info_cmds[1]);
-				close_infile_outfile(in_out[0], in_out[1]);
-				exit(info_cmds[0]);
-			}
-			after_fork(in_out, pipes, i);
-			close_pipes(pipes, info_cmds[1]);
+			infos_cmd(pipes, info_cmds, in_out, i);
 			if (!cmds[i[0]])
 				exit(1);
 			if (test_builtins(cmds[i[0]]))
@@ -114,6 +101,5 @@ int	execute_cmds(char *line, char ***env, int status)
 	while (info_cmds[1]--)
 		free(cmds[info_cmds[1]]);
 	free(cmds);
-//	system("leaks minishell");
 	return (info_cmds[0]);
 }
