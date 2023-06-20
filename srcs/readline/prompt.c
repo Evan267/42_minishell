@@ -79,10 +79,7 @@ char	*readline_with_prompt(char **env)
 	else
 	{
 		str = ft_strjoin(first_part, second_part);
-		free(second_part);
-		second_part = NULL;
-		free(first_part);
-		first_part = NULL;
+		clear_prompt(second_part, first_part);
 	}
 	line = readline(str);
 	if (!line)

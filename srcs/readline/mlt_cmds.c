@@ -27,3 +27,19 @@ void	check_fork(int *pid, int *i)
 		exit(127);
 	}
 }
+
+void	clear_exec(char **line, int *info_cmds, char **cmds)
+{
+	free(*line);
+	while (info_cmds[1]--)
+		free(cmds[info_cmds[1]]);
+	free(cmds);
+}
+
+void	clear_prompt(char *second_part, char *first_part)
+{
+	free(second_part);
+	second_part = NULL;
+	free(first_part);
+	first_part = NULL;
+}

@@ -6,7 +6,8 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
 /*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
-/*   Updated: 2023/06/20 16:11:24 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/20 16:40:39 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/20 14:32:04 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +32,8 @@ pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 			if (!cmds[i[0]])
 				exit(1);
 			if (test_builtins(cmds[i[0]]))
-				exec_builtins_fork(cmds[i[0]], env, test_builtins(cmds[i[0]]), NULL);
+				exec_builtins_fork(cmds[i[0]], env, 
+					test_builtins(cmds[i[0]]), NULL);
 			else
 				exec(cmds[i[0]], env);
 		}
@@ -93,13 +95,13 @@ int	execute_cmds(char *line, char ***env, int status)
 	else
 	{
 		pipes = create_pipes(info_cmds[1]);
-		pid = multi_commands(pipes, cmds, env, info_cmds);
-		stop_pipes(pipes, info_cmds[1]);
-		info_cmds[0] = wait_all_forks(pid, info_cmds[1]);
+		if (pipes || info_cmds[1] == 1)
+		{
+			pid = multi_commands(pipes, cmds, env, info_cmds);
+			stop_pipes(pipes, info_cmds[1]);
+			info_cmds[0] = wait_all_forks(pid, info_cmds[1]);
+		}
 	}
-	free(line);
-	while (info_cmds[1]--)
-		free(cmds[info_cmds[1]]);
-	free(cmds);
+	clear_exec(&line, info_cmds, cmds);
 	return (info_cmds[0]);
 }

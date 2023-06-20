@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:00:20 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/06 10:16:06 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 12:42:50 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_pwd(void)
 {
-	char *pwd;
+	char	*pwd;
 
 	pwd = NULL;
 	pwd = getcwd(pwd, 0);
@@ -24,4 +24,3 @@ int	ft_pwd(void)
 	free(pwd);
 	return (0);
 }
-

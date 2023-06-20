@@ -6,52 +6,52 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 08:51:52 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 14:34:50 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_infile(char *file_or_limiter, int *in_out)
+void	open_infile(char *file, int *in_out)
 {
 	int	ret;
 
 	ret = 0;
-	file_or_limiter = delete_quote(file_or_limiter, '\"');
-	file_or_limiter = delete_quote(file_or_limiter, '\'');
-	if (file_or_limiter && in_out[0] != -1 && in_out[1] != -1)
+	file = delete_quote(file, '\"');
+	file = delete_quote(file, '\'');
+	if (file && in_out[0] != -1 && in_out[1] != -1)
 	{
-		ret = open(file_or_limiter, O_RDONLY, 0);
+		ret = open(file, O_RDONLY, 0);
 		if (ret == -1)
 		{
 			in_out[0] = -1;
-			if (file_or_limiter)
-				free(file_or_limiter);
+			if (file)
+				free(file);
 			return ;
 		}
 	}
-	if (file_or_limiter)
-		free(file_or_limiter);
+	if (file)
+		free(file);
 	if (ret)
 		in_out[0] = ret;
 }
 
-void	open_heredoc(char *file_or_limiter, int *in_out, int status, char ***env)
+void	open_heredoc(char *limiter, int *in_out, int status, char ***env)
 {
 	int	ret;
 
 	ret = 0;
-	file_or_limiter = delete_quote(file_or_limiter, '\"');
-	file_or_limiter = delete_quote(file_or_limiter, '\'');
-	if (file_or_limiter)
-		ret = here_doc(file_or_limiter, status, env);
+	limiter = delete_quote(limiter, '\"');
+	limiter = delete_quote(limiter, '\'');
+	if (limiter)
+		ret = here_doc(limiter, status, env);
 	if (ret && (in_out[1] == -1 || in_out[0] == -1))
 	{
 		close(ret);
 		ret = 0;
 	}
-	if (file_or_limiter)
-		free(file_or_limiter);
+	if (limiter)
+		free(limiter);
 	if (ret)
 		in_out[0] = ret;
 }
@@ -125,40 +125,4 @@ void	outfile(char **split, int i, int *in_out)
 			file = ft_strdup(split[i + 1]);
 		open_outfile(file, 0, in_out);
 	}
-}
-
-char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env)
-{
-	char	**split;
-	char	*ret;
-	int		j;
-
-	j = 0;
-	in_out[0] = 0;
-	in_out[1] = 0;
-	split = ft_split_cmds(cmd, ' ');
-	while (split[j])
-	{
-		infile(split + j, in_out, *status, env);
-		outfile(split, j, in_out);
-		j++;
-	}
-	if (in_out[1] == -1 || in_out[0] == -1)
-	{
-		perror("minishell");
-		*status = 1;
-		ft_clear2d(split);
-		free(cmd);
-		return (NULL);
-	}
-	free(cmd);
-	ret = delete_infile_outfile(split);
-	ft_clear2d(split);
-	return (ret);
-}
-
-void	after_fork(int *in_out, int **pipes, int *i)
-{
-	dup_cond(in_out, i, pipes);
-	close_infile_outfile(in_out[0], in_out[1]);
 }

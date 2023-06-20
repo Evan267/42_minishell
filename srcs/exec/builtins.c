@@ -6,13 +6,13 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:27:26 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/14 11:08:32 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:45:12 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	test_builtins(char *cmds)
+static char	**split_for_builtins(char *cmds)
 {
 	char	**split;
 	char	*cmd_without_io;
@@ -23,7 +23,15 @@ int	test_builtins(char *cmds)
 	ft_clear2d(split);
 	split = ft_split_cmds(cmd_without_io, ' ');
 	free(cmd_without_io);
-	if (!split[0])
+	return (split);
+}
+
+int	test_builtins(char *cmds)
+{
+	char	**split;
+
+	split = split_for_builtins(cmds);
+	if (!split || !split[0])
 		return (ft_clear2d(split), 0);
 	if (!ft_strncmp(split[0], "echo", ft_strlen("echo") + 1))
 		return (ft_clear2d(split), 1);
@@ -58,7 +66,7 @@ int	builtins(char **args, char ***env, int builtin, int *in_out)
 	else if (builtin == 5)
 		return (ft_unset(nb_args, args, env));
 	else if (builtin == 6)
-		return (ft_env(nb_args, args, env));
+		return (ft_env(nb_args, env));
 	else if (builtin == 7)
 		return (ft_exit(nb_args, args, env, in_out));
 	return (-1);

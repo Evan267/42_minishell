@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:59:35 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/14 15:20:58 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:13:06 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@ static	int	not_in_tab(int *tab, int length)
 	return (0);
 }
 
-static	int	*set_tab(int length)
+static	int	*set_tab(int *length, char **env)
 {
 	int	i;
 	int	*tab;
 
+	*length = ft_strlen2d(env);
 	i = 0;
-	tab = malloc(sizeof(int) * (length));
-	while (i < length)
+	tab = malloc(sizeof(int) * (*length));
+	while (i < *length)
 		tab[i++] = -1;
 	return (tab);
 }
@@ -73,8 +74,7 @@ int	call_export(char **env)
 	int		nb[4];
 
 	ft_bzero(nb, 4 * sizeof(int));
-	nb[3] = ft_strlen2d(env);
-	tab = set_tab(nb[3]);
+	tab = set_tab(nb + 3, env);
 	while (nb[0] < nb[3])
 	{
 		nb[1] = 0;
@@ -88,11 +88,10 @@ int	call_export(char **env)
 				temp = env[nb[1]];
 				tab[nb[0]] = nb[1];
 			}
-				nb[1] = nb[1] + 1;
+			nb[1] = nb[1] + 1;
 		}
 		put_export(temp);
 		nb[0] = nb[0] + 1;
 	}
-	free(tab);
-	return (0);
+	return (free(tab), 0);
 }

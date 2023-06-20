@@ -9,13 +9,14 @@ SRCS		= srcs/main.c \
 			  srcs/signals/sign1.c \
 			  srcs/signals/eof.c \
 			  srcs/parsing/var_env.c \
-			  srcs/parsing/test.c \
+			  srcs/parsing/var_env2.c \
 			  srcs/parsing/ft_split_cmds.c \
 			  srcs/parsing/trim_quote.c \
 			  srcs/exec/path.c \
 			  srcs/exec/here_doc.c \
 			  srcs/exec/infile_outfile.c \
 			  srcs/exec/infile_outfile2.c \
+			  srcs/exec/infile_outfile3.c \
 			  srcs/exec/pipes.c \
 			  srcs/exec/exec.c \
 			  srcs/exec/error.c \
@@ -31,6 +32,7 @@ SRCS		= srcs/main.c \
 			  srcs/builtin/export/check_export.c \
 			  srcs/builtin/export/display_export.c \
 			  srcs/builtin/export/parse_export.c \
+			  srcs/builtin/export/utils_export.c \
 			  srcs/builtin/export/setvar_export.c
 
 OBJS		= ${SRCS:.c=.o}
