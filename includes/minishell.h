@@ -22,7 +22,7 @@ int		ft_echo(int argc, char **argv);
 int		ft_cd(int argc, char **argv, char ***env);
 int		ft_pwd(void);
 int		ft_unset(int argc, char **argv, char ***env);
-int		ft_env(int argc, char **argv, char ***env);
+int		ft_env(int argc, char ***env);
 int		ft_exit(int argc, char **argv, char ***env, int *in_out);
 int		ft_export(int argc, char **argv, char ***env);
 int		call_export(char **env);
@@ -33,7 +33,9 @@ char	**new_env(char ***var, char **env);
 char	**parse_var(char **str);
 char	**same_var(char **var);
 int		fund_equal(char *str);
-int		longest_word(char *s1, char *s2);
+int		lgst_wrd(char *s1, char *s2);
+int		nbdiff_env_var(char **var, char **env);
+int		nbsame_env_var(char **var, char **env);
 
 /*Exec*/
 char	*ft_path(char **args, char *envpath);

@@ -28,6 +28,7 @@ SRCS		= srcs/main.c \
 			  srcs/builtin/export/check_export.c \
 			  srcs/builtin/export/display_export.c \
 			  srcs/builtin/export/parse_export.c \
+			  srcs/builtin/export/utils_export.c \
 			  srcs/builtin/export/setvar_export.c
 
 OBJS		= ${SRCS:.c=.o}

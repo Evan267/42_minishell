@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:27:26 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/14 11:08:32 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 12:35:01 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	builtins(char **args, char ***env, int builtin, int *in_out)
 	else if (builtin == 5)
 		return (ft_unset(nb_args, args, env));
 	else if (builtin == 6)
-		return (ft_env(nb_args, args, env));
+		return (ft_env(nb_args, env));
 	else if (builtin == 7)
 		return (ft_exit(nb_args, args, env, in_out));
 	return (-1);

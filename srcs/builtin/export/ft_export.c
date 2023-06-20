@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:45:50 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/14 15:15:49 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:15:07 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,15 @@ void	put_export(char *str)
 	while (str[i])
 		printf("%c", str[i++]);
 	printf("\"\n");
-
 }
 
-
-/* export */
 int	ft_export(int argc, char **argv, char ***env)
 {
 	char	**var;
 	char	**new_txt;
 	int		i;
 	int		ret;
-	
+
 	i = 0;
 	if (argc == 1)
 		return (call_export(*env));

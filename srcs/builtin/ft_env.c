@@ -6,17 +6,16 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:47:10 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/13 11:15:22 by agallet          ###   ########.fr       */
+/*   Updated: 2023/06/20 12:34:15 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(int	argc, char **argv, char ***env)
+int	ft_env(int argc, char ***env)
 {
-	int i;
+	int	i;
 	int	j;
-	(void)argv;
 
 	i = 0;
 	j = 0;
