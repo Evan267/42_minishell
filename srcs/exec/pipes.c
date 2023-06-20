@@ -6,11 +6,11 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:05:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/19 15:08:57 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 14:25:20 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	close_pipes(int **pipes, int len_cmds)
 {
@@ -27,6 +27,28 @@ void	close_pipes(int **pipes, int len_cmds)
 	}
 }
 
+static int	**malloc_pipes(int len_cmds)
+{
+	int	**pipes;
+	int	i;
+
+	i = 0;
+	pipes = malloc(sizeof(int *) * len_cmds - 1);
+	if (!pipes)
+		return (NULL);
+	while (i < len_cmds - 1)
+	{
+		pipes[i] = malloc(sizeof(int *) * 2);
+		if (!pipes[i])
+		{
+			stop_pipes(pipes, i + 1);
+			return (NULL);
+		}
+		i++;
+	}
+	return (pipes);
+}
+
 int	**create_pipes(int len_cmds)
 {
 	int	**pipes;
@@ -35,19 +57,15 @@ int	**create_pipes(int len_cmds)
 	i = 0;
 	if (len_cmds > 1)
 	{
-		pipes = malloc(sizeof(int *) * len_cmds - 1);
-		while (i < len_cmds - 1)
-		{
-			pipes[i] = malloc(sizeof(int) * 2);
-			i++;
-		}
-		i = 0;
+		pipes = malloc_pipes(len_cmds);
+		if (!pipes)
+			return (ft_putendl_fd("Erreur de malloc", 2), NULL);
 		while (i < len_cmds - 1)
 		{
 			if (pipe(pipes[i]) == -1)
 			{
-				perror("pipe");
-				exit(127);
+				perror("minishell");
+				return (NULL);
 			}
 			i++;
 		}

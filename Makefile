@@ -6,13 +6,14 @@ SRCS		= srcs/main.c \
 			  srcs/tools/utils_parsing.c \
 			  srcs/tools/signals.c \
 			  srcs/parsing/var_env.c \
-			  srcs/parsing/test.c \
+			  srcs/parsing/var_env2.c \
 			  srcs/parsing/ft_split_cmds.c \
 			  srcs/parsing/trim_quote.c \
 			  srcs/exec/path.c \
 			  srcs/exec/here_doc.c \
 			  srcs/exec/infile_outfile.c \
 			  srcs/exec/infile_outfile2.c \
+			  srcs/exec/infile_outfile3.c \
 			  srcs/exec/pipes.c \
 			  srcs/exec/exec.c \
 			  srcs/exec/error.c \

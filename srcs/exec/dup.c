@@ -6,11 +6,11 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:14:23 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/15 12:32:56 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:47:05 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	saved_dup(int *in_out)
 {
@@ -33,7 +33,7 @@ void	dup_cond(int *in_out, int *i, int **pipes)
 
 	in = 0;
 	out = 1;
-	if (!(i[0] == 0 && i[0] ==  i[1] - 1))
+	if (!(i[0] == 0 && i[0] == i[1] - 1))
 	{
 		if (i[0] == 0)
 			out = pipes[i[0]][1];
@@ -42,7 +42,7 @@ void	dup_cond(int *in_out, int *i, int **pipes)
 		else if (i[0] > 0 && i[0] < i[1] - 1)
 		{
 			in = pipes[i[0] - 1][0];
-   			out = pipes[i[0]][1];
+			out = pipes[i[0]][1];
 		}
 	}
 	if (in_out[0] > 0)

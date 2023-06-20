@@ -6,11 +6,11 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:05 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/19 13:41:54 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:47:22 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	permission_denied(char *command)
 {

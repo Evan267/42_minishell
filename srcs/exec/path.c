@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 11:39:11 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 14:15:20 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_path(char **args, char *envpath)
 {
 	char		*path;
 	struct stat	info;
-	
+
 	path = find_path(args[0], envpath);
 	stat(path, &info);
 	if (!access(path, F_OK) && access(path, X_OK) && !S_ISDIR(info.st_mode))
@@ -58,7 +58,8 @@ char	*ft_path(char **args, char *envpath)
 			no_file_directory(args[0]);
 		command_not_found(args[0]);
 	}
-	if (!access(args[0], X_OK) && path[0] != '.' && path[1] != '/' && !S_ISDIR(info.st_mode))
+	if (!access(args[0], X_OK)
+		&& path[0] != '.' && path[1] != '/' && !S_ISDIR(info.st_mode))
 		command_not_found(args[0]);
 	return (path);
 }

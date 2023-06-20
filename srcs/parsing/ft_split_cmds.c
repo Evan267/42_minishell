@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:52:59 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/14 15:18:38 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 15:20:11 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,46 @@ static unsigned int	count_words(const char *str, char c)
 	return (count);
 }
 
-static char	*word_dup(const char *str, int start, int finish)
+static char	*word_dup(const char *str, int *start, int finish)
 {
 	char	*word;
 	int		i;
 
 	i = 0;
-	word = malloc((finish - start + 1) * sizeof(char));
-	while (start < finish)
-		word[i++] = str[start++];
+	word = malloc((finish - *start + 1) * sizeof(char));
+	while (*start < finish)
+		word[i++] = str[(*start)++];
 	word[i] = '\0';
+	*start = -1;
 	return (word);
 }
 
-char		**ft_split_cmds(char const *s, char c)
+static char	**init_split(char const *s, char c, size_t *i, char **quote)
+{
+	char	**split;
+
+	quote[0] = NULL;
+	quote[1] = NULL;
+	if (!s)
+		return (NULL);
+	split = malloc((count_words(s, c) + 1) * sizeof(char *));
+	if (!split)
+		return (NULL);
+	i[0] = 0;
+	i[1] = 0;
+	return (split);
+}
+
+char	**ft_split_cmds(char const *s, char c)
 {
 	size_t	i[2];
 	int		index;
 	char	**split;
 	char	*quote_p[2];
 
-	quote_p[0] = NULL;
-	quote_p[1] = NULL;
-	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
-		return (0);
-	i[0] = 0;
-	i[1] = 0;
+	split = init_split(s, c, (size_t *)i, (char **)quote_p);
+	if (!split)
+		return (NULL);
 	index = -1;
 	while (i[0] <= ft_strlen(s))
 	{
@@ -77,12 +91,8 @@ char		**ft_split_cmds(char const *s, char c)
 		if (s[i[0]] != c && index < 0)
 			index = i[0];
 		else if ((s[i[0]] == c || i[0] == ft_strlen(s)) && index >= 0)
-		{
-			split[(i[1])++] = word_dup(s, index, i[0]);
-			index = -1;
-		}
+			split[(i[1])++] = word_dup(s, &index, i[0]);
 		(i[0])++;
 	}
-	split[i[1]] = 0;
-	return (split);
+	return (split[i[1]] = 0, split);
 }
