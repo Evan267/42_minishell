@@ -2,9 +2,12 @@ SRCS		= srcs/main.c \
 			  srcs/readline/prompt.c \
 			  srcs/readline/commands.c \
 			  srcs/readline/history.c \
+			  srcs/readline/test_line.c \
+			  srcs/readline/test_line2.c \
 			  srcs/tools/utils.c \
 			  srcs/tools/utils_parsing.c \
 			  srcs/tools/signals.c \
+			  srcs/tools/init.c \
 			  srcs/parsing/var_env.c \
 			  srcs/parsing/var_env2.c \
 			  srcs/parsing/ft_split_cmds.c \

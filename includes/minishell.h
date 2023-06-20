@@ -72,6 +72,8 @@ void	pipe_sigint(void);
 int		setstop(int nb);
 int		getstop(void);
 void	disable_sigint(void);
+void	set_shell(int sw);
+char	**init(char **line, char **env, char **history_path, int *status);
 
 /*Parsing*/
 int		permission_denied(char *command);
@@ -93,5 +95,8 @@ char	*readline_with_prompt(char **env);
 int		execute_cmds(char *line, char **env[], int status);
 void	save_history(char *line, char **history_file, char **env);
 void	reload_history(char **history_file, char **env);
+char	*test_line(char *line, int *status, char **hstry_path, char **envp);
+int		str_isprint(char *line);
+int		error_line(char *line, char *unexpected_token);
 
 # endif

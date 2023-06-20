@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 14:43:47 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/14 09:50:38 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 16:45:51 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*define_path_history(char *history_path, char **env)
 		home = getvaluevar("HOME", env);
 		if (!home)
 			return (NULL);
-		history_path = ft_strjoin(home, "/.history.minishell");
+		history_path = ft_strjoin(home, "/.minishell_history");
 		free(home);
 	}
 	return (history_path);
@@ -35,11 +35,14 @@ int	open_history_file(int write_or_read, char **history_path, char **env)
 	if (!(*history_path))
 		return (-1);
 	if (write_or_read)
-		fd = open(*history_path, O_RDONLY, 0666);
+		fd = open(*history_path, O_RDONLY);
 	else
-		fd = open(*history_path, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd = open(*history_path, O_CREAT | O_WRONLY | O_APPEND);
 	if (fd == -1)
-		perror("Erreur a l'ouverture de l'historique");
+	{
+		ft_putendl_fd("minishell: erreur d'ouverture de l'historique", 2);
+		ft_putendl_fd("minishell va tenter de creer un fichier", 2);
+	}
 	return (fd);
 }
 
