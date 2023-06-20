@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*   Created: 2023/04/26 14:09:39 by eberger           #+#    #+#             */
 /*   Updated: 2023/06/15 11:00:45 by eberger          ###   ########.fr       */
-/*   Updated: 2023/06/16 14:17:12 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 10:03:45 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ int	execute_cmds(char *line, char ***env, int status)
 		info_cmds[0] = wait_all_forks(pid, info_cmds[1]);
 	}
 	free(line);
-	ft_clear2d(cmds);
+	while (info_cmds[1]--)
+		free(cmds[info_cmds[1]]);
+	free(cmds);
+//	system("leaks minishell");
 	return (info_cmds[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:05:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/09 11:18:30 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:08:57 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,28 @@ int	**create_pipes(int len_cmds)
 	int	i;
 
 	i = 0;
-	pipes = malloc(sizeof(int *) * len_cmds - 1);
-	while (i < len_cmds - 1)
+	if (len_cmds > 1)
 	{
-		pipes[i] = malloc(sizeof(int) * 2);
-		i++;
-	}
-	i = 0;
-	while (i < len_cmds - 1)
-	{
-		if (pipe(pipes[i]) == -1)
+		pipes = malloc(sizeof(int *) * len_cmds - 1);
+		while (i < len_cmds - 1)
 		{
-			perror("pipe");
-			exit(127);
+			pipes[i] = malloc(sizeof(int) * 2);
+			i++;
 		}
-		i++;
+		i = 0;
+		while (i < len_cmds - 1)
+		{
+			if (pipe(pipes[i]) == -1)
+			{
+				perror("pipe");
+				exit(127);
+			}
+			i++;
+		}
+		return (pipes);
 	}
-	return (pipes);
+	else
+		return (NULL);
 }
 
 void	stop_pipes(int **pipes, int len_cmds)

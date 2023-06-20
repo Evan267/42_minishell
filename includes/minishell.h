@@ -70,12 +70,9 @@ int		getstop(void);
 void	disable_sigint(void);
 
 /*Parsing*/
-int		test_quote(char *command);/*a verifier*/
-char	**test_space(char **ret);/*a verifier*/
-char	*test_ech(char *command);/*a verifier*/
-char	*test_sh(char *command);/*a verifier*/
-int		permission_denied(char *command);/*a verifier*/
-int		command_not_found(char *command);/*a verifier*/
+int		permission_denied(char *command);
+int		command_not_found(char *command);
+int		no_file_directory(char *command);
 char	*getvaluevar(char *var_name, char **env);
 char	*replace_env_var(char *line, int status, char ***env);
 void	find_quote(char *s, char **quote);

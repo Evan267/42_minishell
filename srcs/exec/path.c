@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/19 10:14:53 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 11:39:11 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ char	*find_path(char *command, char *envp_path)
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
 		if (!access(cmd_path, F_OK))
-			return (free(cmd), cmd_path);
+			return (free(cmd), ft_clear2d(paths), cmd_path);
 		i++;
 		free(cmd_path);
 	}
 	free(cmd);
+	ft_clear2d(paths);
 	if (!access(command, F_OK))
 		return (command);
 	return (NULL);
@@ -48,20 +49,16 @@ char	*ft_path(char **args, char *envpath)
 	if (!access(path, F_OK) && access(path, X_OK) && !S_ISDIR(info.st_mode))
 	{
 		if (args[0][0] != '.' && args[0][0] != '/')
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			exit(127);
-		}
+			command_not_found(args[0]);
 		permission_denied(args[0]);
 	}
 	else if (access(path, X_OK))
 	{
 		if (args[0][0] == '.' || args[0][0] == '/')
-		{
-			ft_putendl_fd("minishell: No such file or directory", 2);
-			exit(127);
-		}
+			no_file_directory(args[0]);
 		command_not_found(args[0]);
 	}
+	if (!access(args[0], X_OK) && path[0] != '.' && path[1] != '/' && !S_ISDIR(info.st_mode))
+		command_not_found(args[0]);
 	return (path);
 }

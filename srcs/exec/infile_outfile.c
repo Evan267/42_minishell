@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/16 15:00:14 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/20 08:51:52 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env)
 		free(cmd);
 		return (NULL);
 	}
+	free(cmd);
 	ret = delete_infile_outfile(split);
 	ft_clear2d(split);
-	free(cmd);
 	return (ret);
 }
 
