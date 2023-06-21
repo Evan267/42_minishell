@@ -1,15 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdupcat.c                                     :+:      :+:    :+:   */
+/*   eof.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 14:35:03 by eberger           #+#    #+#             */
-/*   Updated: 2023/04/27 15:59:00 by eberger          ###   ########.fr       */
+/*   Created: 2023/06/21 09:34:37 by eberger           #+#    #+#             */
+/*   Updated: 2023/06/21 09:34:40 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdupcat(char	*
+void	ctrl_d(char *prompt, char **envp, int sw)
+{
+	if (sw)
+	{
+		tputs("\033[1A", 1, putchar);
+		printf("%s exit\n", prompt);
+		free(prompt);
+		ft_clear2d(envp);
+	}
+	exit(0);
+}

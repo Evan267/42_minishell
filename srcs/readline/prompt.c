@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/21 09:27:45 by eberger           #+#    #+#             */
+/*   Updated: 2023/06/21 09:30:14 by eberger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*user_place(char **env)
@@ -48,7 +60,7 @@ char	*add_second_part(char **env)
 	test = getvaluevar("HOME", env);
 	cwd = getcwd(cwd, 0);
 	if (cwd && test && ft_strlen(cwd) == ft_strlen(test)
-			&& ft_strncmp(cwd, test, ft_strlen(cwd)) == 0)
+		&& ft_strncmp(cwd, test, ft_strlen(cwd)) == 0)
 		ret = ft_strdup("~ % ");
 	else
 		ret = last_directory(cwd);
@@ -79,10 +91,7 @@ char	*readline_with_prompt(char **env)
 	else
 	{
 		str = ft_strjoin(first_part, second_part);
-		free(second_part);
-		second_part = NULL;
-		free(first_part);
-		first_part = NULL;
+		clear_prompt(second_part, first_part);
 	}
 	line = readline(str);
 	if (!line)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/21 09:42:18 by eberger           #+#    #+#             */
+/*   Updated: 2023/06/21 09:42:20 by eberger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*join_3_str(char *str1, char *str2, char *str3)
@@ -48,7 +60,7 @@ void	trim_by_char(char **ret, char c)
 	trim[0] = c;
 	trim[1] = 0;
 	tmp = *ret;
-	*ret  = ft_strtrim(*ret, trim);
+	*ret = ft_strtrim(*ret, trim);
 	free(tmp);
 }
 

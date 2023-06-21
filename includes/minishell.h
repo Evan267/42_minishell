@@ -1,5 +1,17 @@
-#ifndef MAKEFILE_H
-# define MAKEFILE_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/21 09:15:34 by eberger           #+#    #+#             */
+/*   Updated: 2023/06/21 09:20:51 by eberger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <sys/types.h>
@@ -54,6 +66,11 @@ void	close_infile_outfile(int in, int out);
 void	outfile(char **split, int i, int *in_out);
 void	infile(char **split, int *in_out, int status, char ***env);
 char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env);
+void	infos_cmd(int **pipes, int *info_cmds, int *in_out, int *i);
+void	init_cmds(int *i, int *infos_cmds, int **pid);
+void	check_fork(int *pid, int *i);
+void	clear_exec(char **line, int *info_cmds, char **cmds);
+void	clear_prompt(char *second_part, char *first_part);
 void	after_fork(int *in_out, int **pipes, int *i);
 char	*delete_infile_outfile(char **split);
 int		here_doc(char *limiter, int status, char ***env);
@@ -64,9 +81,13 @@ char	*join_3_str(char *str1, char *str2, char *str3);
 char	*ft_joinsplit(char **split);
 void	trim_by_char(char **ret, char c);
 char	*empty_str(char *str);
+void	disable_sigint(void);
+
+/*Signals*/
 void	ctrl_d(char *promtp, char **envp, int sw);
 void	set_signals(void);
 void	exit_sig(void);
+void	exit_sigint(int sig, siginfo_t *info, void *context);
 void	heredoc_sigint(void);
 void	pipe_sigint(void);
 int		setstop(int nb);
@@ -99,4 +120,4 @@ char	*test_line(char *line, int *status, char **hstry_path, char **envp);
 int		str_isprint(char *line);
 int		error_line(char *line, char *unexpected_token);
 
-# endif
+#endif
