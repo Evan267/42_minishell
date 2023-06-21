@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:15:34 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/21 09:20:51 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/21 15:03:27 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ void	save_history(char *line, char **history_file, char **env);
 void	reload_history(char **history_file, char **env);
 char	*test_line(char *line, int *status, char **hstry_path, char **envp);
 int		str_isprint(char *line);
-int		error_line(char *line, char *unexpected_token);
+void	error_line(char *line, char *unexpected_token);
+void	fork_test_line(char *line, int *pipes, int test);
+int		test_lastchar(char *line);
 
 #endif

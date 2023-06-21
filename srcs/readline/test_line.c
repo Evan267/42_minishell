@@ -6,22 +6,11 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:14 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 16:18:05 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/21 15:03:13 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*add_readline(char *line)
-{
-	char	*read;
-
-	read = readline("> ");
-	if (!read)
-		return (NULL);
-	line = join_3_str(line, " ", read);
-	return (line);
-}
 
 static char	test_consecutivepipe(char *line)
 {
@@ -47,7 +36,7 @@ static char	test_consecutivepipe(char *line)
 	return (last_char);
 }
 
-static int	test_lastchar(char *line)
+int	test_lastchar(char *line)
 {
 	int		i;
 	char	last_char;
@@ -63,7 +52,7 @@ static int	test_lastchar(char *line)
 	return (0);
 }
 
-static int	wait_line(pid_t pid, int *status)
+static int	wait_line(pid_t pid, int *status, char *line)
 {
 	int	status_pid;
 
@@ -71,6 +60,10 @@ static int	wait_line(pid_t pid, int *status)
 	set_shell(0);
 	if (WEXITSTATUS(status_pid))
 	{
+		if (WEXITSTATUS(status) == 3)
+			error_line(line, "|");
+		else if (WEXITSTATUS(status) == 2)
+			error_line(line, "newline");
 		*status = 258;
 		if (WEXITSTATUS(status) == 1)
 			*status = 1;
@@ -84,26 +77,25 @@ char	*test_line(char *line, int *status, char **hstry_path, char **envp)
 {
 	int		test;
 	pid_t	pid;
+	int		pipes[2];
 
 	test = test_lastchar(line);
 	pipe_sigint();
+	if (pipe(pipes) == -1)
+	{
+		perror("minishell");
+		return (NULL);
+	}
 	pid = fork();
 	if (pid == 0)
-	{
-		while (test == 1 && !getstop())
-		{
-			line = add_readline(line);
-			if (!line)
-				exit(258);
-			test = test_lastchar(line);
-		}
-		if (test == 3)
-			exit(error_line(line, "|"));
-		else if (test == 2)
-			exit(error_line(line, "newline"));
-		exit(0);
-	}
-	if (wait_line(pid, status))
+		fork_test_line(line, pipes, test);
+	if (close(pipes[1]) == -1)
+		perror("minishell");
+	free(line);
+	line = get_next_line(pipes[0]);
+	if (close(pipes[0]) == -1)
+		perror("minishell");
+	if (wait_line(pid, status, line))
 		return (save_history(line, hstry_path, envp), NULL);
 	else
 		return (line);
