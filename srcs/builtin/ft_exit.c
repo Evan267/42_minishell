@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:08:24 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/20 12:40:21 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/21 16:21:31 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ int	err_ex(char *arg, char *msg, int ret)
 	char	*error;
 	char	*temp;
 
-	temp = ft_strjoin("minishell: exit: ", arg);
+	if (arg)
+		temp = ft_strjoin("minishell: exit: ", arg);
+	else
+		temp = ft_strdup("minishell: exit");
 	error = ft_strjoin(temp, msg);
 	free(temp);
 	ft_putendl_fd(error, 2);
@@ -75,11 +78,17 @@ int	err_ex(char *arg, char *msg, int ret)
 	return (ret);
 }
 
-int	str_isnumeric(char *str)
+int	str_islonglong(char *str)
 {
-	int	i;
+	int		i;
+	char	*without_zero;
 
 	i = 0;
+	without_zero = str;
+	while (*without_zero == '0')
+		without_zero++;
+	if (ft_strlen(without_zero) > 19)
+		return (1);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
@@ -96,17 +105,19 @@ int	ft_exit(int argc, char **argv, char ***env, int *in_out)
 	unsigned char	code_exit;
 
 	code_exit = 0;
-	if (argc > 2)
-		code_exit = err_ex(argv[1], ": too many arguments", 1);
-	else if (argc > 1)
-	{
-		code_exit = ft_atoi_uchar(argv[1]);
-		if (ft_atoi_ulonglong(argv[1]) > 9223372036854775807
-			|| str_isnumeric(argv[1]))
-			code_exit = err_ex(argv[1], ": numeric argument required", 255);
-	}
 	if (in_out)
 		ft_putendl_fd("exit", in_out[3]);
+	if (argc > 2 && !str_islonglong(argv[1])
+		&& ft_atoi_ulonglong(argv[1]) <= 9223372036854775807)
+		return (err_ex(NULL, ": too many arguments", 1));
+	if (argc > 1)
+	{
+		if (str_islonglong(argv[1])
+			|| ft_atoi_ulonglong(argv[1]) > 9223372036854775807)
+			code_exit = err_ex(argv[1], ": numeric argument required", 255);
+		else
+			code_exit = ft_atoi_uchar(argv[1]);
+	}
 	ft_clear2d(*env);
 	exit(code_exit);
 	return (0);
