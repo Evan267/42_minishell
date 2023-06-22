@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:08:24 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/21 16:21:31 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:32:41 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,14 @@ int	err_ex(char *arg, char *msg, int ret)
 int	str_islonglong(char *str)
 {
 	int		i;
-	char	*without_zero;
 
 	i = 0;
-	without_zero = str;
-	while (*without_zero == '0')
-		without_zero++;
-	if (ft_strlen(without_zero) > 19)
-		return (1);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
+	while (str[i] == '0')
+		i++;
+	if (ft_strlen(str + i) > 19)
+		return (1);
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
