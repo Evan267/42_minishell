@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:15:34 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/21 15:03:27 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:49:55 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	saved_dup(int *in_out);
 void	stop_pipes(int **pipes, int len_cmds);
 int		**create_pipes(int len_cmds);
 void	close_pipes(int **pipes, int len_cmds);
-void	close_infile_outfile(int in, int out);
+void	close_infile_outfile(int *in, int *out);
 void	outfile(char **split, int i, int *in_out);
 void	infile(char **split, int *in_out, int status, char ***env);
 char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env);

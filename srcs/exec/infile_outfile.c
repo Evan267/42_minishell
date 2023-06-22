@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 14:34:50 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:52:29 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	infile(char **split, int *in_out, int status, char ***env)
 	if (!ft_strncmp(*split, "<<", 2))
 	{
 		if (in_out[0] > 1)
-			close(in_out[0]);
+			close_infile_outfile(in_out, NULL);
 		if (ft_strlen(*split) > 2)
 			file = ft_strdup(*split + 2);
 		else
@@ -91,7 +91,7 @@ void	infile(char **split, int *in_out, int status, char ***env)
 	else if (!ft_strncmp(*split, "<", 1))
 	{
 		if (in_out[0] > 1)
-			close(in_out[0]);
+			close_infile_outfile(in_out, NULL);
 		if (ft_strlen(*split) > 1)
 			file = ft_strdup(*split + 1);
 		else
@@ -108,7 +108,7 @@ void	outfile(char **split, int i, int *in_out)
 	if (!ft_strncmp(split[i], ">>", 2))
 	{
 		if (in_out[1] > 1)
-			close(in_out[1]);
+			close_infile_outfile(NULL, in_out + 1);
 		if (ft_strlen(split[i]) > 2)
 			file = ft_strdup(split[i] + 2);
 		else
@@ -118,7 +118,7 @@ void	outfile(char **split, int i, int *in_out)
 	else if (!ft_strncmp(split[i], ">", 1))
 	{
 		if (in_out[1] > 1)
-			close(in_out[1]);
+			close_infile_outfile(NULL, in_out + 1);
 		if (ft_strlen(split[i]) > 1)
 			file = ft_strdup(split[i] + 1);
 		else

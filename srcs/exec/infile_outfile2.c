@@ -6,23 +6,25 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:56:27 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/16 12:47:30 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:47:13 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_infile_outfile(int in, int out)
+void	close_infile_outfile(int *in, int *out)
 {
-	if (in && in > 1)
+	if (in && *in > 1)
 	{
-		if (close(in) == -1)
+		if (close(*in) == -1)
 			perror("close");
+		*in = 0;
 	}
-	if (out && out > 1)
+	if (out && *out > 1)
 	{
-		if (close(out) == -1)
+		if (close(*out) == -1)
 			perror("close");
+		*out = 0;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 14:02:28 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 14:37:37 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:50:23 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ char	*infile_outfile(char *cmd, int *in_out, int *status, char ***env)
 void	after_fork(int *in_out, int **pipes, int *i)
 {
 	dup_cond(in_out, i, pipes);
-	close_infile_outfile(in_out[0], in_out[1]);
+	close_infile_outfile(in_out, in_out + 1);
 }

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:25:42 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/21 09:27:06 by eberger          ###   ########.fr       */
+/*   Updated: 2023/06/22 10:51:32 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	infos_cmd(int **pipes, int *info_cmds, int *in_out, int *i)
 	if (info_cmds[0])
 	{
 		close_pipes(pipes, info_cmds[1]);
-		close_infile_outfile(in_out[0], in_out[1]);
+		close_infile_outfile(in_out, in_out + 1);
 		exit(info_cmds[0]);
 	}
 	after_fork(in_out, pipes, i);
