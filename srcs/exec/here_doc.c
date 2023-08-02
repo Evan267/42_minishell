@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:25:14 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/16 14:11:10 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/02 11:06:41 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	here_doc(char *limiter, int status, char ***env)
 	int		status_wait;
 
 	if (pipe(pipes) == -1)
-	{	
+	{
 		perror("pipe");
 		exit(127);
 	}

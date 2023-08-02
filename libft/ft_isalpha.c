@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 11:47:50 by eberger           #+#    #+#             */
-/*   Updated: 2022/10/31 12:24:03 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/02 11:07:36 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@ int	ft_isalpha(int str)
 
 	value = 1;
 	if (str < 65 || (str > 90 && str < 97) || str > 122)
-			value = 0;
+		value = 0;
 	return (value);
 }
