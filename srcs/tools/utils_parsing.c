@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 12:15:31 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/21 09:43:45 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 15:24:13 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	find_quote(char *s, char **quote)
 {
 	char	c[2];
 	char	*strchr[2];
-	int		i;
 
-	i = 0;
 	if ((ft_strchr(s, '\'') && quote[1] == ft_strchr(s, '\''))
 		|| (ft_strchr(s, '\'') && quote[0] == ft_strchr(s, '\''))
 		|| (ft_strchr(s, '\"') && quote[1] == ft_strchr(s, '\"'))

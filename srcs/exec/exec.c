@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/20 13:53:10 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 15:48:27 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ static void	error_execve(struct stat info, char *path)
 	{
 		if ((path[0] == '.' || path[0] == '/'))
 		{
-			ft_putendl_fd("minishell: is a directory", 2);
+			ft_putendl_fd("minishell: Is a directory", 2);
 			exit (126);
 		}
 		else
 			command_not_found(path);
 	}
 	perror("minishell");
-	exit(127);
+	if (access(path, F_OK))
+		exit(127);
+	exit(126);
 }
 
 void	exec(char *cmd, char ***env)
@@ -37,7 +39,7 @@ void	exec(char *cmd, char ***env)
 
 	args = ft_split_cmds(cmd, ' ');
 	args = ft_trim_builtins(args);
-	if (!access(args[0], X_OK) && args[0][0] == '.' && args[0][1] == '/')
+	if (!access(args[0], X_OK) || (args[0][0] == '.' && args[0][1] == '/'))
 		path = args[0];
 	else
 	{

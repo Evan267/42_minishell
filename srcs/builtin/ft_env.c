@@ -6,7 +6,7 @@
 /*   By: agallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:47:10 by agallet           #+#    #+#             */
-/*   Updated: 2023/06/20 12:34:15 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 15:24:42 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	ft_env(int argc, char ***env)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	if (argc != 1)
 		return (1);
 	while ((*env)[i])

@@ -6,12 +6,13 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:22:13 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/22 10:18:15 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 14:36:04 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//#include <sys/types.h>
+//#include <sys/wait.h>
 pid_t	*multi_commands(int **pipes, char **cmds, char ***env, int *info_cmds)
 {
 	int		i[2];
