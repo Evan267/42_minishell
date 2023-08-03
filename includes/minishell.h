@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:15:34 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/22 10:49:55 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 09:35:29 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "../libft/libft.h"
+# include "libft.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
