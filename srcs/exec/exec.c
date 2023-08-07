@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/07 12:21:04 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/07 12:38:49 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	error_execve(struct stat info, char *path)
 	{
 		if ((path[0] == '.' || path[0] == '/'))
 		{
-			ft_putendl_fd("minishell: Is a directory", 2);
+			ft_putendl_fd("minishell: is a directory", 2);
 			exit (126);
 		}
 		else
