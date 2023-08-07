@@ -54,7 +54,7 @@ CFLAGS		= -g -Wall -Wextra -Werror
 			${CC} ${CFLAGS} -I ${HEAD} -Ilibft -c $< -o ${<:.c=.o}
 
 ${NAME}:	${LFT} ${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lreadline -ltermcap -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L ./libft -L ~/.brew/opt/readline/lib -lft -lpthread -lreadline -ltermcap -o ${NAME}
 
 ${LFT}:
 			make -s -C libft

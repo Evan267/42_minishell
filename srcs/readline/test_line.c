@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:14 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/03 09:19:08 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/07 12:23:17 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ static char	test_consecutivepipe(char *line)
 
 int	test_lastchar(char *line)
 {
-	int		i;
 	char	last_char;
 
-	i = 0;
 	last_char = test_consecutivepipe(line);
 	if (!last_char)
 		return (3);
@@ -55,17 +53,20 @@ int	test_lastchar(char *line)
 static int	wait_line(pid_t pid, int *status, char *line)
 {
 	int	status_pid;
+	int	exit_status;
 
+	exit_status = 0;
 	waitpid(pid, &status_pid, 0);
 	set_shell(0);
 	if (WEXITSTATUS(status_pid))
 	{
-		if (WEXITSTATUS(status) == 3)
+		exit_status = WEXITSTATUS(status_pid);
+		if (exit_status == 3)
 			error_line(line, "|");
-		else if (WEXITSTATUS(status) == 2)
+		else if (exit_status == 2)
 			error_line(line, "newline");
 		*status = 258;
-		if (WEXITSTATUS(status) == 1)
+		if (exit_status == 1)
 			*status = 1;
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: eberger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 18:36:16 by eberger           #+#    #+#             */
-/*   Updated: 2023/06/02 14:33:34 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 14:33:12 by agallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ft_error_base(char *b, int blen)
 	return (0);
 }
 
-static int	ft_len_convert_nb(unsigned long nb, int base_len)
+static int	ft_len_convert_nb(long nb, int base_len)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ static int	ft_len_convert_nb(unsigned long nb, int base_len)
 	return (i);
 }
 
-static char	*ft_save(unsigned long nbl, char *base, int len_convert, int neg)
+static char	*ft_save(long nbl, char *base, int len_convert, int neg)
 {
 	int		base_len;
 	char	*result;
@@ -73,7 +73,7 @@ static char	*ft_save(unsigned long nbl, char *base, int len_convert, int neg)
 	return (result);
 }
 
-static char	*ft_convert(unsigned long nb, char *base, int base_len)
+static char	*ft_convert(long nb, char *base, int base_len)
 {
 	char	*result;
 	int		len_convert;
