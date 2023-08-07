@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:09:17 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/03 09:20:44 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 12:16:52 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,17 @@ char	*replace_env_var(char *line, int status, char ***env)
 {
 	int		i[2];
 	int		quote;
+	int		dble;
 
 	i[0] = 0;
 	quote = 0;
+	dble = 0;
 	while (line[i[0]])
 	{
 		i[1] = 0;
-		if (line[i[0]] == '\'')
+		if (line[i[0]] == '\"' && !quote)
+			dble = !dble;
+		if (line[i[0]] == '\'' && !dble)
 			quote = !quote;
 		else if (line[i[0]] == '$' && !quote)
 			line = add_var(line, status, env, i);

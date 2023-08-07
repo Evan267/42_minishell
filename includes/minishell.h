@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 09:15:34 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/03 09:35:29 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 12:33:02 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	find_quote(char *s, char **quote);
 char	**ft_clear(char **ret);
 char	**ft_split_cmds(char const *s, char c);
 char	*delete_char(char *str, char *c);
-char	*delete_quote(char *str, char c);
+char	*delete_quote(char *str);
 char	**ft_trim_builtins(char **arg);
 char	*delete_pipe_outfile(char *line);
 

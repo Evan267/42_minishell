@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:33:46 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/03 09:23:10 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/03 12:36:20 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	open_infile(char *file, int *in_out)
 	int	ret;
 
 	ret = 0;
-	file = delete_quote(file, '\"');
-	file = delete_quote(file, '\'');
+	file = delete_quote(file);
 	if (file && in_out[0] != -1 && in_out[1] != -1)
 	{
 		ret = open(file, O_RDONLY, 0);
@@ -41,8 +40,7 @@ void	open_heredoc(char *limiter, int *in_out, int status, char ***env)
 	int	ret;
 
 	ret = 0;
-	limiter = delete_quote(limiter, '\"');
-	limiter = delete_quote(limiter, '\'');
+	limiter = delete_quote(limiter);
 	if (limiter)
 		ret = here_doc(limiter, status, env);
 	if (ret && (in_out[1] == -1 || in_out[0] == -1))
@@ -61,8 +59,7 @@ void	open_outfile(char *file, int append, int *in_out)
 	int	ret;
 
 	ret = 0;
-	file = delete_quote(file, '\"');
-	file = delete_quote(file, '\'');
+	file = delete_quote(file);
 	if (file && append && in_out[1] != -1 && in_out[0] != -1)
 		ret = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (file && in_out[1] != -1 && in_out[0] != -1)
