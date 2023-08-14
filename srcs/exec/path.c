@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/14 11:51:02 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/14 12:21:47 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*ft_path(char **args, char *envpath)
 		command_not_found(args[0]);
 	}
 	if (!access(args[0], X_OK)
-		&& path[0] != '.' && path[1] != '/' && !S_ISDIR(info.st_mode))
+		&& path[0] == '.' && path[1] == '/' && !S_ISDIR(info.st_mode))
 		command_not_found(args[0]);
 	return (path);
 }
