@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/14 12:28:47 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/14 12:33:49 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,5 @@ char	*ft_path(char **args, char *envpath)
 	if (!access(args[0], X_OK)
 		&& path[0] == '.' && path[1] == '/' && !S_ISDIR(info.st_mode))
 		command_not_found(args[0]);
-	printf("path = %s\n", path);
 	return (path);
 }
