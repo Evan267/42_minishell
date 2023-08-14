@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/14 12:33:49 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/14 12:53:44 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ char	*find_path(char *command, char *envp_path)
 	}
 	free(cmd);
 	ft_clear2d(paths);
-	if (!access(command, F_OK))
-		return (command);
 	return (NULL);
 }
 
