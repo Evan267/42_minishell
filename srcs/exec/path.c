@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:19:00 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/03 09:24:27 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:51:02 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*find_path(char *command, char *envp_path)
 
 	if (ft_strlen(command) == 0)
 		return (NULL);
+	if (!envp_path)
+		return (command_not_found(command), command);
 	paths = ft_split(envp_path, ':');
 	cmd = ft_strjoin("/", command);
 	i = 0;
