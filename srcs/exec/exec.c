@@ -6,7 +6,7 @@
 /*   By: eberger <eberger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 16:31:38 by eberger           #+#    #+#             */
-/*   Updated: 2023/08/14 12:19:30 by eberger          ###   ########.fr       */
+/*   Updated: 2023/08/14 12:30:06 by eberger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exec(char *cmd, char ***env)
 
 	args = ft_split_cmds(cmd, ' ');
 	args = ft_trim_builtins(args);
-	if (!access(args[0], X_OK) && (ft_strchr(args[0], '/')))
+	if ((ft_strchr(args[0], '/')))
 		path = args[0];
 	else
 	{
